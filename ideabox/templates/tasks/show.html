@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>IdeaBox Tasks</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../../style/libraries.css">
+    <link rel="stylesheet" href="../../style/grids.css">
+    <link rel="stylesheet" href="../../style/main.css">
+  </head>
+  <body>
+      <h1>{{task.task}}</h1> <div><a href="/tasks/complete/{{ task.id }}">mark as completed</a></div>
+
+      <h2>Completed: <strong>{% if task.status %} completed! {% else %}not completed!{% endif %}</strong></h2>
+      {% if task.status %}
+      <strong>Completed at: {{ task.completed_at }}</strong>
+      {% endif %}
+      
+      <h3>Deadline: {% if task.deadline %} {{ task.deadline }} {% else %} None {% endif %}</h3>
+
+      <h4>Being done by: {{ assigned_user.firstname }} {{ assigned_user.lastname }}</h4>
+
+
+  </body>
+</html>

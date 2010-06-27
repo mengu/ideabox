@@ -1,0 +1,3 @@
+include ideabox/config/deployment.ini_tmpl
+recursive-include ideabox/public *
+recursive-include ideabox/templates *
