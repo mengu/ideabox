@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="../../style/libraries.css">
     <link rel="stylesheet" href="../../style/grids.css">
     <link rel="stylesheet" href="../../style/main.css">
+    <script type="text/javascript" src="../../js/jquery.js"></script>
+    <script type="text/javascript" src="../../js/main.js"></script>
   </head>
   <body>
       <h1>{{project.name}}</h1>
@@ -13,13 +15,20 @@
 
       <div class="line">
           <div class="unit size1of5"><h2>Tasks</h2></div>
-          <div class="unit size1of5 lastUnit"><a href="/tasks/new?projectid={{project.id}}">Create New Task</a></div>
       </div>
+      <div class="unit size1of5 lastUnit" style="margin-top: 1%; margin-bottom: 2%;"><a href="/tasks/new?projectid={{project.id}}">Create New Task</a></div>
 
       {% for task in tasks %}
       <div class="line">
+          <div class="unit size1of5" id="completed_{{ task.id }}">
+              {% if task.completed %}
+              <img src="../../img/check.png" border="0" />
+              {% else %}
+              <img src="../../img/undone.png" border="0" />
+              {% endif %}
+          </div>
           <div class="unit size1of3"><a href="/tasks/show/{{ task.id }}">{{ task.task }}</a></div>
-          <div clasS="unit size1of5 lastUnit">{% if task.status %}completed{% else %}not completed{% endif %}</div>
+          <div class="unit size1of5"><input type="checkbox" id="{{ task.id }}" {% if task.completed %} checked {% endif %} /></a></div>
       </div>
       {% endfor %}
 
