@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 
 from pylons import request, response, session, tmpl_context as c, url
@@ -42,3 +43,11 @@ class UsersController(BaseController):
             return redirect("/projects")
         else:
             return redirect("/users/login")
+
+    def logout(self):
+        if "user" not in session:
+            return redirect("/")
+        else:
+            session.pop("user")
+            session.save()
+            return redirect("/")
