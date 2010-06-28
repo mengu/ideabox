@@ -32,7 +32,7 @@ class Task(Base):
     project = Column(Integer, ForeignKey("project.id"))
     author = Column(Integer, ForeignKey("user.id"))
     assigned_to = Column(Integer, ForeignKey("user.id"))
-    status = Column(Boolean)
+    completed = Column(Boolean)
     completed_at = Column(DateTime, nullable=True)
     deadline = Column(DateTime, nullable=True)
     dateline = Column(DateTime)
@@ -42,6 +42,6 @@ class Task(Base):
         self.project = project
         self.author = author
         self.assigned_to = assigned_to
-        self.status = False
+        self.completed = False
         self.deadline = deadline
         self.dateline = datetime.now()
