@@ -5,5 +5,6 @@ $(document).ready(function(){
        $.post('/tasks/complete/'+this.id, {"completed": completed});
        $("#completed_"+this.id).html(completedImage);
     });
+    $("input").attr("checked").css("background", "#000");
 });
 

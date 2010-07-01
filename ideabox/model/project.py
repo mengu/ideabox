@@ -45,3 +45,20 @@ class Task(Base):
         self.completed = False
         self.deadline = deadline
         self.dateline = datetime.now()
+
+class Note(Base):
+    __tablename__ = "note"
+
+    id = Column(Integer, primary_key=True)
+    project = Column(Integer, ForeignKey("project.id"))
+    task = Column(Integer, ForeignKey("task.id"))
+    author = Column(Integer, ForeignKey("user.id"))
+    note = Column(Unicode(300))
+    dateline = Column(DateTime)
+
+    def __init__(self, project, task, author, note):
+        self.project = project
+        self.task = task
+        self.author = author
+        self.note = note
+        self.dateline = datetime.now()

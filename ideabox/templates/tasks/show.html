@@ -19,6 +19,23 @@
 
       <h4>Being done by: {{ assigned_user.firstname }} {{ assigned_user.lastname }}</h4>
 
+      <h2>Notes</h2>
+      <form method="post" action="/notes/create">
+          <input type="hidden" name="project" value="{{ task.project }}" />
+          <input type="hidden" name="task" value="{{ task.id }}" />
+          <div class="line">
+            <div>New note:</div>
+            <div><input type="text" class="input" name="note" /></div>
+            <div><input type="submit" value="Add new note" /></div>
+          </div>
+      </form>
+
+      <div class="line">
+          {% for note in notes %}
+          <div>{{ note.note }} ({{ note.dateline }})</div>
+          {% endfor %}
+      </div>
+
 
   </body>
 </html>

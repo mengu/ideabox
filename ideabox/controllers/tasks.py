@@ -5,7 +5,7 @@ from pylons.controllers.util import abort, redirect
 
 from ideabox.lib.base import BaseController, Session, render
 from ideabox.lib.helpers import did_login_or_redirect
-from ideabox.model.project import Task
+from ideabox.model.project import Task, Note
 from ideabox.model.user import User
 from datetime import datetime
 
@@ -29,7 +29,7 @@ class TasksController(BaseController):
         new_task = Task(**task_dict)
         Session.add(new_task)
         Session.commit()
-        return redirect("/tasks/show/%s" % new_task.id)
+        return redirect("/projects/show/%s" % task_dict["project"])
 
     def show(self, id):
         try:
@@ -37,7 +37,8 @@ class TasksController(BaseController):
             assigned_user = Session.query(User).filter_by(id=task.assigned_to).one()
         except:
             abort(404)
-        return render("tasks/show.html", {"task": task, "assigned_user":assigned_user})
+        notes = Session.query(Note).filter_by(task=id).all()
+        return render("tasks/show.html", {"task": task, "assigned_user":assigned_user, "notes": notes})
 
     def complete(self, id):
         did_login_or_redirect(session)

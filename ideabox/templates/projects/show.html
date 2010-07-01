@@ -8,27 +8,53 @@
     <link rel="stylesheet" href="../../style/main.css">
     <script type="text/javascript" src="../../js/jquery.js"></script>
     <script type="text/javascript" src="../../js/main.js"></script>
+    <style>
+        html
+        {
+            background: #024769;
+            color: #fff;
+        }
+
+        a { color: #95CBE9; text-decoration: none; }
+
+        .headers { font-size: 1.3em; }
+
+        h2 span { font-size: 0.5em; }
+
+    </style>
   </head>
   <body>
-      <h1>{{project.name}}</h1>
-      <div>{{project.description}}</div>
+      <h1>{{project.name}} <span>{{ project.description }}</span></h1>
 
       <div class="line">
-          <div class="unit size1of5"><h2>Tasks</h2></div>
+          <div class="size1of2">
+              <h2>Task List <span><a href="/tasks/new?projectid={{project.id}}">Create New Task</a></span></h2>
+              <div style="margin-bottom: 3%;">There are <strong>{{ completed_tasks }} completed tasks</strong> and <strong>{{ uncompleted_tasks }} uncompleted tasks</strong>.</div>
+          </div>
       </div>
-      <div class="unit size1of5 lastUnit" style="margin-top: 1%; margin-bottom: 2%;"><a href="/tasks/new?projectid={{project.id}}">Create New Task</a></div>
+
+      <div class="line headers">
+          <div class="unit size1of5"><strong>Completed</strong></div>
+          <div class="unit size1of3"><strong>Task</strong></div>
+          <div class="unit size1of5"><strong>Assigned to</strong></div>
+      </div>
 
       {% for task in tasks %}
       <div class="line">
-          <div class="unit size1of5" id="completed_{{ task.id }}">
-              {% if task.completed %}
-              <img src="../../img/check.png" border="0" />
-              {% else %}
-              <img src="../../img/undone.png" border="0" />
-              {% endif %}
+          <div class="unit size1of5">
+              <div class="line">
+                  <div class="unit size1of5" id="completed_{{ task.id }}">
+                       {% if task.completed %}
+                       <img src="../../img/check.png" border="0" alt="Completed at {{ task.completed_at }}" />
+                       {% else %}
+                       <img src="../../img/undone.png" border="0" />
+                       {% endif %}
+                  </div>
+                  <div class="unit size1of5 lastUnit checkboxes"><input type="checkbox" id="{{ task.id }}" {% if task.completed %} checked {% endif %} /></a></div>
+              </div>
           </div>
           <div class="unit size1of3"><a href="/tasks/show/{{ task.id }}">{{ task.task }}</a></div>
-          <div class="unit size1of5"><input type="checkbox" id="{{ task.id }}" {% if task.completed %} checked {% endif %} /></a></div>
+          <div class="unit size1of5">{{ assigned_users[task.id].firstname }} {{ assigned_users[task.id].lastname }}</div>
       </div>
       {% endfor %}
 
