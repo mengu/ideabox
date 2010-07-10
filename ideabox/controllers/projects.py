@@ -43,11 +43,9 @@ class ProjectsController(BaseController):
         except:
             abort(404)
         tasks = Session.query(Task).filter_by(project=id).all()
-        assigned_users = {}
         completed_tasks = 0
         uncompleted_tasks = 0
         for task in tasks:
-            assigned_users[task.id] = Session.query(User).filter_by(id=task.assigned_to).one()
             if task.completed:
                 completed_tasks = completed_tasks + 1
             else:
@@ -55,7 +53,6 @@ class ProjectsController(BaseController):
         context = {
             "project": project,
             "tasks": tasks,
-            "assigned_users": assigned_users,
             "completed_tasks": completed_tasks,
             "uncompleted_tasks": uncompleted_tasks}
         return render("projects/show.html", context)

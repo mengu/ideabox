@@ -17,7 +17,7 @@
       
       <h3>Deadline: {% if task.deadline %} {{ task.deadline }} {% else %} None {% endif %}</h3>
 
-      <h4>Being done by: {{ assigned_user.firstname }} {{ assigned_user.lastname }}</h4>
+      <h4>Being done by: {{ task.assigned_user.firstname }} {{ task.assigned_user.lastname }}</h4>
 
       <h2>Notes</h2>
       <form method="post" action="/notes/create">

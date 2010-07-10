@@ -3,7 +3,9 @@ __date__ ="$Jun 27, 2010 5:16:14 PM$"
 
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.types import Integer, Unicode, UnicodeText, DateTime, Boolean
+from sqlalchemy.orm import relation, backref
 from ideabox.model.meta import Base
+from ideabox.model.user import User
 from ideabox.lib.helpers import slugify
 from datetime import datetime
 
@@ -14,7 +16,8 @@ class Project(Base):
     name = Column(Unicode(100))
     slug = Column(Unicode(150))
     description = Column(Unicode(300))
-    author = Column(Integer, ForeignKey("user.id"))
+    user_id = Column(Integer, ForeignKey("user.id"))
+    author = relation(User, backref=backref('project', lazy='dynamic'), primaryjoin="Project.user_id == User.id")
     dateline = Column(DateTime)
 
     def __init__(self, name, description, author):
@@ -30,8 +33,10 @@ class Task(Base):
     id = Column(Integer, primary_key=True)
     task = Column(UnicodeText(300))
     project = Column(Integer, ForeignKey("project.id"))
-    author = Column(Integer, ForeignKey("user.id"))
+    user_id = Column(Integer, ForeignKey("user.id"))
+    task_user = relation(User, backref=backref('task', lazy='dynamic'), primaryjoin="Task.user_id == User.id")
     assigned_to = Column(Integer, ForeignKey("user.id"))
+    assigned_user = relation(User, backref=backref('task_assigned', lazy='dynamic'), primaryjoin="Task.assigned_to == User.id")
     completed = Column(Boolean)
     completed_at = Column(DateTime, nullable=True)
     deadline = Column(DateTime, nullable=True)

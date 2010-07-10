@@ -54,7 +54,7 @@
               </div>
           </div>
           <div class="unit size1of3"><a href="/tasks/show/{{ task.id }}">{{ task.task }}</a></div>
-          <div class="unit size1of5">{{ assigned_users[task.id].firstname }} {{ assigned_users[task.id].lastname }}</div>
+          <div class="unit size1of5">{{ task.assigned_user.firstname }} {{ task.assigned_user.lastname }}</div>
       </div>
       {% endfor %}
 

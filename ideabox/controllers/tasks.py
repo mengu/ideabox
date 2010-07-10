@@ -36,11 +36,10 @@ class TasksController(BaseController):
     def show(self, id):
         try:
             task = Session.query(Task).filter_by(id=id).one()
-            assigned_user = Session.query(User).filter_by(id=task.assigned_to).one()
         except:
             abort(404)
         notes = Session.query(Note).filter_by(task=id).all()
-        return render("tasks/show.html", {"task": task, "assigned_user":assigned_user, "notes": notes})
+        return render("tasks/show.html", {"task": task, "notes": notes})
 
     def complete(self, id):
         try:
