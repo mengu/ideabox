@@ -4,7 +4,6 @@ from pylons import request, response, session, tmpl_context as c, url
 from pylons.controllers.util import abort, redirect
 
 from ideabox.lib.base import BaseController, Session, render
-from ideabox.lib.helpers import did_login_or_redirect
 from ideabox.model.project import Task, Note
 from ideabox.model.user import User
 from datetime import datetime
@@ -13,15 +12,18 @@ log = logging.getLogger(__name__)
 
 class TasksController(BaseController):
 
+    def __before__(self, action, **params):
+        filter_actions = ["new", "edit", "create", "update", "delete"]
+        if "user" not in session and action in filter_actions:
+            redirect("/users/login")
+
     def new(self):
-        did_login_or_redirect(session)
         if not request.params["projectid"]:
             return redirect("/projects")
         users = Session.query(User).all()
         return render("tasks/new.html", {"users": users, "projectid":request.params["projectid"]})
 
     def create(self):
-        did_login_or_redirect(session)
         task_dict = {}
         for param in request.params:
             task_dict[param] = request.params[param]
@@ -41,7 +43,6 @@ class TasksController(BaseController):
         return render("tasks/show.html", {"task": task, "assigned_user":assigned_user, "notes": notes})
 
     def complete(self, id):
-        did_login_or_redirect(session)
         try:
             task = Session.query(Task).filter_by(id=id).one()
         except:
@@ -55,7 +56,6 @@ class TasksController(BaseController):
         Session.commit()
 
     def delete(self, id):
-        did_login_or_redirect(session)
         try:
             task = Session.query(Task).filter_by(id=id).delete()
         except:

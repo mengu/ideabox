@@ -11,6 +11,11 @@ log = logging.getLogger(__name__)
 
 class ProjectsController(BaseController):
 
+    def __before__(self, action, **params):
+        filter_actions = ["new", "edit", "create", "update", "delete"]
+        if "user" not in session and action in filter_actions:
+            redirect("/users/login")
+
     def new(self):
         return render("projects/new.html")
 
@@ -29,10 +34,8 @@ class ProjectsController(BaseController):
         return redirect("/projects/show/%s" % project.id)
 
     def index(self):
-        # Return a rendered template
-        #return render('/projects.mako')
-        # or, return a string
-        return 'Hello World'
+        project = Session.query(Project).all()
+        return render("projects/index.html", {"projects": projects})
 
     def show(self, id):
         try:
