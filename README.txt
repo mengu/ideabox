@@ -1,5 +1,6 @@
-This file is for you to describe the ideabox application. Typically
-you would include information such as the information below:
+About IdeaBox
+======================
+IdeaBox is a simple project management application which is being developed with Pylons web framework.
 
 Installation and Setup
 ======================
@@ -17,3 +18,4 @@ Tweak the config file as appropriate and then setup the application::
     paster setup-app config.ini
 
 Then you are ready to go.
+
