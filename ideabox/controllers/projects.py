@@ -26,7 +26,7 @@ class ProjectsController(BaseController):
             project_args = {
                 "name": request.params["name"],
                 "description": request.params["description"],
-                "author": 1
+                "user_id": 1
             }
             project = Project(**project_args)
             Session.add(project)
@@ -34,7 +34,7 @@ class ProjectsController(BaseController):
         return redirect("/projects/show/%s" % project.id)
 
     def index(self):
-        project = Session.query(Project).all()
+        projects = Session.query(Project).all()
         return render("projects/index.html", {"projects": projects})
 
     def show(self, id):

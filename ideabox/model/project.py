@@ -20,11 +20,11 @@ class Project(Base):
     author = relation(User, backref=backref('project', lazy='dynamic'), primaryjoin="Project.user_id == User.id")
     dateline = Column(DateTime)
 
-    def __init__(self, name, description, author):
+    def __init__(self, name, description, user_id):
         self.name = name
         self.slug = slugify(name)
         self.description = description
-        self.author = author
+        self.user_id = user_id
         self.dateline = datetime.now()
 
 class Task(Base):
@@ -34,7 +34,7 @@ class Task(Base):
     task = Column(UnicodeText(300))
     project = Column(Integer, ForeignKey("project.id"))
     user_id = Column(Integer, ForeignKey("user.id"))
-    task_user = relation(User, backref=backref('task', lazy='dynamic'), primaryjoin="Task.user_id == User.id")
+    user = relation(User, backref=backref('task', lazy='dynamic'), primaryjoin="Task.user_id == User.id")
     assigned_to = Column(Integer, ForeignKey("user.id"))
     assigned_user = relation(User, backref=backref('task_assigned', lazy='dynamic'), primaryjoin="Task.assigned_to == User.id")
     completed = Column(Boolean)
@@ -57,7 +57,8 @@ class Note(Base):
     id = Column(Integer, primary_key=True)
     project = Column(Integer, ForeignKey("project.id"))
     task = Column(Integer, ForeignKey("task.id"))
-    author = Column(Integer, ForeignKey("user.id"))
+    user_id = Column(Integer, ForeignKey("user.id"))
+    user = relation(User, backref=backref('note', lazy='dynamic'), primaryjoin="Note.user_id == User.id")
     note = Column(Unicode(300))
     dateline = Column(DateTime)
 
