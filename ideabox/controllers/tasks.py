@@ -59,5 +59,5 @@ class TasksController(BaseController):
             task = Session.query(Task).filter_by(id=id).delete()
         except:
             abort(404)
-        return redirect("/tasks")
+        return redirect("/projects/index")
 

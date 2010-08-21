@@ -37,6 +37,7 @@
           <div class="unit size1of5"><strong>Completed</strong></div>
           <div class="unit size1of3"><strong>Task</strong></div>
           <div class="unit size1of5"><strong>Assigned to</strong></div>
+          <div class="unit size1of5"><strong>Delete</strong></div>
       </div>
 
       {% for task in tasks %}
@@ -55,6 +56,8 @@
           </div>
           <div class="unit size1of3"><a href="/tasks/show/{{ task.id }}">{{ task.task }}</a></div>
           <div class="unit size1of5">{{ task.assigned_user.firstname }} {{ task.assigned_user.lastname }}</div>
+          <div class="unit size1of5"><a href="/tasks/delete/{{ task.id }}">Delete</a></div>
+          
       </div>
       {% endfor %}
 

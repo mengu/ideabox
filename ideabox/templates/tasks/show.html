@@ -14,7 +14,7 @@
       {% if task.status %}
       <strong>Completed at: {{ task.completed_at }}</strong>
       {% endif %}
-      
+
       <h3>Deadline: {% if task.deadline %} {{ task.deadline }} {% else %} None {% endif %}</h3>
 
       <h4>Being done by: {{ task.assigned_user.firstname }} {{ task.assigned_user.lastname }}</h4>
@@ -32,10 +32,11 @@
 
       <div class="line">
           {% for note in notes %}
-          <div>{{ note.note }} ({{ note.dateline }})</div>
+          <div style="margin-top: 1%;">{{ note.note }} ({{ note.dateline }})</div>
           {% endfor %}
       </div>
 
 
   </body>
 </html>
+
