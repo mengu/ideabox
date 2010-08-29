@@ -9,6 +9,7 @@
   </head>
   <body>
       <h1>{{task.task}}</h1> <div><a href="/tasks/complete/{{ task.id }}">mark as completed</a></div>
+        <div><a href="/projects/show/{{ task.project}}">Return to the project</a></div>
 
       <h2>Completed: <strong>{% if task.status %} completed! {% else %}not completed!{% endif %}</strong></h2>
       {% if task.status %}
