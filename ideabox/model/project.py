@@ -68,3 +68,27 @@ class Note(Base):
         self.author = author
         self.note = note
         self.dateline = datetime.now()
+
+class Ticket(Base):
+    __tablename__ = "ticket"
+
+    id = Column(Integer, primary_key=True)
+    project_id = Column(Integer, ForeignKey("project.id"))
+    project = relation(Project, backref=backref('project', lazy='dynamic'), 
+        primaryjoin="Ticket.project_id == Project.id")
+    user_id = Column(Integer, ForeignKey("user.id"))
+    user = relation(User, backref=backref('user', lazy='dynamic'), primaryjoin="Ticket.user_id == User.id")
+    body = Column(UnicodeText)
+    status = Column(Integer)
+    priority = Column(Integer)
+    dateline = Column(DateTime)
+    
+    def __init__(self, project_id, user_id, body, status, priority):
+        self.project_id = project_id
+        self.user_id = user_id
+        self.body = body
+        self.status = status
+        self.priority = priority
+        self.dateline = datetime.utcnow()
+
+
