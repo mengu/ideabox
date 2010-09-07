@@ -9,7 +9,7 @@
   </head>
   <body>
       <form method="post" action="/tasks/create">
-      <input type="hidden" name="project" value="{{projectid}}" />
+      <input type="hidden" name="project" value="${projectid}" />
           <div class="line">
             <div class="unit size1of5">Task:</div>
             <div class="unit size1of5 lastUnit"><input type="text" class="input" name="task" /></div>
@@ -18,9 +18,9 @@
             <div class="unit size1of5">Assign to:</div>
             <div class="unit size1of5 lastUnit">
                 <select name="assigned_to">
-                    {% for user in users %}
-                    <option value="{{user.id}}">{{ user.firstname }} {{ user.lastname }}</option>
-                    {% endfor %}
+                    % for user in users:
+                    <option value="${user.id}">${user.firstname} ${user.lastname}</option>
+                    % endfor
                 </select>
             </div>
           </div>

@@ -3,7 +3,7 @@
 Provides the BaseController class for subclassing.
 """
 from pylons.controllers import WSGIController
-from pylons.templating import render_jinja2 as render
+from pylons.templating import render_mako as render
 
 from ideabox.model.meta import Session
 

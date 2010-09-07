@@ -1,8 +1,9 @@
 """Pylons environment configuration"""
 import os
 
-from jinja2 import Environment, FileSystemLoader
+from mako.lookup import TemplateLookup
 from pylons.configuration import PylonsConfig
+from pylons.error import handle_mako_error
 from sqlalchemy import engine_from_config
 
 import ideabox.lib.app_globals as app_globals
@@ -35,9 +36,14 @@ def load_environment(global_conf, app_conf):
     pylons.cache._push_object(config['pylons.app_globals'].cache)
     
 
-    # Create the Jinja2 Environment
-    jinja2_env = Environment(loader=FileSystemLoader(paths['templates']))
-    config['pylons.app_globals'].jinja2_env = jinja2_env
+    # Create the Mako TemplateLookup, with the default auto-escaping
+    config['pylons.app_globals'].mako_lookup = TemplateLookup(
+        directories=paths['templates'],
+        error_handler=handle_mako_error,
+        module_directory=os.path.join(app_conf['cache_dir'], 'templates'),
+        input_encoding='utf-8', default_filters=['escape'],
+        imports=['from webhelpers.html import escape'])
+
 
     # Setup the SQLAlchemy database engine
     engine = engine_from_config(config, 'sqlalchemy.')
