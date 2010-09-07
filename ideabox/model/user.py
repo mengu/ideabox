@@ -15,13 +15,15 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     firstname = Column(Unicode(100))
     lastname = Column(Unicode(100))
-    email = Column(Unicode(150))
+    username = Column(Unicode(100), unique=True)
+    email = Column(Unicode(150), unique=True)
     password = Column(Unicode(32))
     joindate = Column(DateTime)
 
-    def __init__(self, firstname, lastname, email, password):
+    def __init__(self, firstname, lastname, username, email, password):
         self.firstname = firstname
         self.lastname = lastname
+        self.username = username
         self.email = email
         self.password = password
         self.joindate = datetime.now()
