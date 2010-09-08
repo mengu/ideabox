@@ -13,6 +13,26 @@
 
 <div class="line">
     <div><h3>Add New User</h3></div>
-    <div><input type="text" name="name" id="username-box" /> <input type="button" id="add-user" value="Add User" /></div>
-    <div class="username-list"></div>
+          <div>
+              <input type="hidden" name="project_id" id="project_id" value="${project.id}" />
+              <input type="text" name="username" id="username-box" />
+              <input type="button" value="Add User" id="add-user" />
+          </div>
+      </div>
+
+      <div class="line username-list-header">
+          <div class="unit size1of5"><strong>Username</strong></div>
+          <div class="unit size1of5"><strong>Delete</strong></div>
+      </div>
+
+      <div class="user-list">
+          % for user in project.users:
+          <div class="line">
+              <div class="unit size1of5"><a href="/users/show/${user.id}">${user.firstname} ${user.lastname}</a></div>
+              <div class="unit size1of3"><a href="/projects/deleteuser/${user.id}">Delete</a></div>
+          </div>
+          % endfor
+      </div>
+
 </div>
+
