@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import logging
+import hashlib
+import json
 
 from pylons import request, response, session, tmpl_context as c, url
 from pylons.controllers.util import abort, redirect
-import hashlib
 from ideabox.lib.base import BaseController, Session, render
 from ideabox.model.user import User
 
@@ -51,3 +52,9 @@ class UsersController(BaseController):
             session.pop("user")
             session.save()
             return redirect("/")
+
+    def find(self):
+        users = Session.query(User).filter(User.username.like(request.params["q"]+"%")).all()
+        for user in users:
+            yield user.username
+
