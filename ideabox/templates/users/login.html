@@ -1,25 +1,18 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <title>Sign in IdeaBox</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" href="../style/libraries.css">
-    <link rel="stylesheet" href="../style/grids.css">
-    <link rel="stylesheet" href="../style/main.css">
-  </head>
-  <body>
-      <form method="post" action="/users/dologin">
-          <div>
-            <div>E-mail:</div>
-            <div><input type="text" class="input" name="email" /></div>
-          </div>
-          <div>
-            <div>Password:</div>
-            <div><input type="password" class="input" name="password" /></div>
-          </div>
-          <div>
-            <div><input type="submit" value="Sign In" /> </div>
-          </div>
-      </form>
-  </body>
-</html>
+<%inherit file="/common/base.html" />
+
+<%def name="title()">Login</%def>
+
+
+<form method="post" action="/users/dologin">
+    <div>
+      <div>E-mail:</div>
+      <div><input type="text" class="input" name="email" /></div>
+    </div>
+    <div>
+      <div>Password:</div>
+      <div><input type="password" class="input" name="password" /></div>
+    </div>
+    <div>
+      <div><input type="submit" value="Sign In" /> </div>
+    </div>
+</form>
