@@ -1,24 +1,31 @@
 __author__="mengu"
 __date__ ="$Jun 27, 2010 5:16:14 PM$"
 
-from sqlalchemy import Column, ForeignKey
+from sqlalchemy import Table, Column, ForeignKey
 from sqlalchemy.types import Integer, Unicode, UnicodeText, DateTime, Boolean
-from sqlalchemy.orm import relation, backref
+from sqlalchemy.orm import relation
 from ideabox.model.meta import Base
 from ideabox.model.user import User
 from ideabox.lib.helpers import slugify
 from datetime import datetime
 
+project_member_table = Table('project_member', Base.metadata,
+    Column('project_id', Integer, ForeignKey('project.id'), primary_key=True),
+    Column('user_id', Integer, ForeignKey('user.id'), primary_key=True)
+)
+
 class Project(Base):
     __tablename__ = "project"
 
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode(100))
-    slug = Column(Unicode(150))
-    description = Column(Unicode(300))
-    user_id = Column(Integer, ForeignKey("user.id"))
-    author = relation(User, backref=backref('project', lazy='dynamic'), primaryjoin="Project.user_id == User.id")
-    dateline = Column(DateTime)
+    name = Column(Unicode(100), nullable=False)
+    slug = Column(Unicode(150), nullable=False)
+    description = Column(Unicode(300), nullable=False)
+    author_id = Column(Integer, ForeignKey("user.id"), nullable=False)
+    dateline = Column(DateTime, nullable=False)
+    
+    users = relation(User, secondary=project_member_table, backref="projects")
+    author = relation(User, backref="project", primaryjoin="Project.author_id == User.id")
 
     def __init__(self, name, description, user_id):
         self.name = name
@@ -31,21 +38,22 @@ class Task(Base):
     __tablename__ = "task"
 
     id = Column(Integer, primary_key=True)
-    task = Column(UnicodeText(300))
-    project = Column(Integer, ForeignKey("project.id"))
-    user_id = Column(Integer, ForeignKey("user.id"))
-    user = relation(User, backref=backref('task', lazy='dynamic'), primaryjoin="Task.user_id == User.id")
-    assigned_to = Column(Integer, ForeignKey("user.id"))
-    assigned_user = relation(User, backref=backref('task_assigned', lazy='dynamic'), primaryjoin="Task.assigned_to == User.id")
-    completed = Column(Boolean)
+    task = Column(UnicodeText, nullable=False)
+    project = Column(Integer, ForeignKey("project.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
+    assigned_to = Column(Integer, ForeignKey("user.id"), nullable=False)
+    completed = Column(Boolean, nullable=False)
     completed_at = Column(DateTime, nullable=True)
     deadline = Column(DateTime, nullable=True)
-    dateline = Column(DateTime)
+    dateline = Column(DateTime, nullable=False)
+    
+    user = relation(User, backref="tasks", primaryjoin="Task.user_id == User.id")
+    assigned_user = relation(User, backref="tasks_assigned", primaryjoin="Task.assigned_to == User.id")
 
-    def __init__(self, task, project, author, assigned_to, deadline):
+    def __init__(self, task, project, user_id, assigned_to, deadline):
         self.task = task
         self.project = project
-        self.author = author
+        self.user_id = user_id
         self.assigned_to = assigned_to
         self.completed = False
         self.deadline = deadline
@@ -55,12 +63,13 @@ class Note(Base):
     __tablename__ = "note"
 
     id = Column(Integer, primary_key=True)
-    project = Column(Integer, ForeignKey("project.id"))
-    task = Column(Integer, ForeignKey("task.id"))
-    user_id = Column(Integer, ForeignKey("user.id"))
-    user = relation(User, backref=backref('note', lazy='dynamic'), primaryjoin="Note.user_id == User.id")
-    note = Column(Unicode(300))
-    dateline = Column(DateTime)
+    project = Column(Integer, ForeignKey("project.id"), nullable=False)
+    task = Column(Integer, ForeignKey("task.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
+    note = Column(Unicode(300), nullable=False)
+    dateline = Column(DateTime, nullable=False)
+    
+    user = relation(User, backref="note", primaryjoin="Note.user_id == User.id")
 
     def __init__(self, project, task, author, note):
         self.project = project
@@ -73,15 +82,15 @@ class Ticket(Base):
     __tablename__ = "ticket"
 
     id = Column(Integer, primary_key=True)
-    project_id = Column(Integer, ForeignKey("project.id"))
-    project = relation(Project, backref=backref('project', lazy='dynamic'), 
-        primaryjoin="Ticket.project_id == Project.id")
-    user_id = Column(Integer, ForeignKey("user.id"))
-    user = relation(User, backref=backref('user', lazy='dynamic'), primaryjoin="Ticket.user_id == User.id")
-    body = Column(UnicodeText)
-    status = Column(Integer)
-    priority = Column(Integer)
-    dateline = Column(DateTime)
+    project_id = Column(Integer, ForeignKey("project.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
+    body = Column(UnicodeText, nullable=False)
+    status = Column(Integer, nullable=False)
+    priority = Column(Integer, nullable=False)
+    dateline = Column(DateTime, nullable=False)
+    
+    project = relation(Project, backref="project", primaryjoin="Ticket.project_id == Project.id")
+    user = relation(User, backref="tickets", primaryjoin="Ticket.user_id == User.id")
     
     def __init__(self, project_id, user_id, body, status, priority):
         self.project_id = project_id
