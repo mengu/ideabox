@@ -27,7 +27,7 @@ class TasksController(BaseController):
         task_dict = {}
         for param in request.params:
             task_dict[param] = request.params[param]
-        task_dict["author"] = session["user"]["id"]
+        task_dict["user_id"] = session["user"]["id"]
         new_task = Task(**task_dict)
         Session.add(new_task)
         Session.commit()
