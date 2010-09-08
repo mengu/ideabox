@@ -1,4 +1,5 @@
 import logging
+import json
 
 from pylons import request, response, session, tmpl_context as c, url
 from pylons.controllers.util import abort, redirect
@@ -56,3 +57,21 @@ class ProjectsController(BaseController):
             "completed_tasks": completed_tasks,
             "uncompleted_tasks": uncompleted_tasks}
         return render("projects/show.html", context)
+
+    def users(self, id):
+        try:
+            project = Session.query(Project).filter_by(id=id).one()
+        except:
+            abort(404)
+        return render("projects/users.html", {"project": project})
+
+    def newuser(self, id):
+        try:
+            project = Session.query(Project).filter_by(id=id).one()
+            user = Session.query(User).filter_by(username=request.params["username"]).one()
+        except:
+            abort(404)
+        project.users.append(user)
+        Session.commit()
+        user_info = dict(id=user.id, firstname=user.firstname, lastname=user.lastname)
+        return json.dumps(user_info)
