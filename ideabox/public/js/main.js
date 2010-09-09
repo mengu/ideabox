@@ -19,7 +19,6 @@ $(document).ready(function(){
         var project_id = $("#project_id").val();
         var username = $("#username-box").val();
         $.post("/projects/"+project_id+"/users/new", {"username": username}, function(data){
-            console.log(data.firstname);
             $(".user-list").append('<div class="line">\
                 <div class="unit size1of5"><a href="/users/show/'+data.id+'">'+data.firstname+' '+data.lastname+'</a></div>\
                 <div class="unit size1of3"><a href="/projects/deleteuser/'+data.id+'">Delete</a></div>\
