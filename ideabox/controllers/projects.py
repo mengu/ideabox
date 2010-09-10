@@ -77,3 +77,16 @@ class ProjectsController(BaseController):
         Session.commit()
         user_info = dict(id=user.id, firstname=user.firstname, lastname=user.lastname)
         return json.dumps(user_info)
+
+    def deluser(self, id, userid):
+        try:
+            project = Session.query(Project).filter_by(id=id).one()
+            user = Session.query(User).filter_by(id=userid).one()
+        except:
+            abort(404)
+        if hasattr(project, "users"):
+            if user in project.users:
+                project.users.remove(user)
+                Session.commit()
+        return redirect("/projects/show/%s" % id)
+

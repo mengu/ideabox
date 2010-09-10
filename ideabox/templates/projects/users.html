@@ -29,7 +29,7 @@
           % for user in project.users:
           <div class="line">
               <div class="unit size1of5"><a href="/users/show/${user.id}">${user.firstname} ${user.lastname}</a></div>
-              <div class="unit size1of3"><a href="/projects/deleteuser/${user.id}">Delete</a></div>
+              <div class="unit size1of3"><a href="/projects/${project.id}/users/${user.id}/delete">Delete</a></div>
           </div>
           % endfor
       </div>
