@@ -5,7 +5,7 @@ from pylons import request, response, session, tmpl_context as c, url
 from pylons.controllers.util import abort, redirect
 
 from ideabox.lib.base import BaseController, Session, render
-from ideabox.model.project import Project, Task
+from ideabox.model.project import Project, TaskList, Task
 from ideabox.model.user import User
 
 log = logging.getLogger(__name__)
@@ -27,9 +27,10 @@ class ProjectsController(BaseController):
             project_args = {
                 "name": request.params["name"],
                 "description": request.params["description"],
-                "user_id": 1
+                "author_id": 1
             }
             project = Project(**project_args)
+            project.tasklists = [TaskList("Default Tasks")]
             Session.add(project)
             Session.commit()
         return redirect("/projects/show/%s" % project.id)
@@ -43,7 +44,7 @@ class ProjectsController(BaseController):
             project = Session.query(Project).filter_by(id=id).one()
         except:
             abort(404)
-        tasks = Session.query(Task).filter_by(project=id).all()
+        tasks = Session.query(Task).filter_by(project_id=id).all()
         completed_tasks = 0
         uncompleted_tasks = 0
         for task in tasks:
@@ -53,9 +54,10 @@ class ProjectsController(BaseController):
                 uncompleted_tasks = uncompleted_tasks + 1
         context = {
             "project": project,
-            "tasks": tasks,
-            "completed_tasks": completed_tasks,
-            "uncompleted_tasks": uncompleted_tasks}
+            "tasklists": project.tasklists,
+            "completed_tasks": 0,#completed_tasks,
+            "uncompleted_tasks": 0,#uncompleted_tasks
+        }
         return render("projects/show.html", context)
 
     def users(self, id):

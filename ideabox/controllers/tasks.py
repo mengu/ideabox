@@ -18,20 +18,25 @@ class TasksController(BaseController):
             redirect("/users/login")
 
     def new(self):
-        if not request.params["projectid"]:
+        if not request.params["tasklist"]:
             return redirect("/projects")
         users = Session.query(User).all()
-        return render("tasks/new.html", {"users": users, "projectid":request.params["projectid"]})
+        context = {
+            "users": users,
+            "tasklist_id": request.params["tasklist"],
+            "project_id": request.params["project"]
+        }
+        return render("tasks/new.html", context)
 
     def create(self):
         task_dict = {}
         for param in request.params:
             task_dict[param] = request.params[param]
-        task_dict["user_id"] = session["user"]["id"]
+        task_dict["user_id"] = unicode(session["user"]["id"])
         new_task = Task(**task_dict)
         Session.add(new_task)
         Session.commit()
-        return redirect("/projects/show/%s" % task_dict["project"])
+        return redirect("/projects/show/%s" % new_task.tasklist.project.id)
 
     def show(self, id):
         try:

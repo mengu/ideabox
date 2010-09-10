@@ -5,7 +5,7 @@
 
 
 <h1>${task.task}</h1> <div><a href="/tasks/complete/${task.id}">mark as completed</a></div>
-  <div><a href="/projects/show/${task.project}">Return to the project</a></div>
+  <div><a href="/projects/show/${task.tasklist.project_id}">Return to the project</a></div>
 
 <h2>Completed: <strong>
         % if task.completed:
@@ -28,7 +28,7 @@
 
 <h2>Notes</h2>
 <form method="post" action="/notes/create">
-    <input type="hidden" name="project" value="${task.project}" />
+    <input type="hidden" name="project" value="${task.tasklist.project}" />
     <input type="hidden" name="task" value="${task.id}" />
     <div class="line">
       <div>New note:</div>

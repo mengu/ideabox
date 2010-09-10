@@ -27,19 +27,34 @@ class Project(Base):
     users = relation(User, secondary=project_member_table, backref="projects")
     author = relation(User, backref="project", primaryjoin="Project.author_id == User.id")
 
-    def __init__(self, name, description, user_id):
+    def __init__(self, name, description, author_id):
         self.name = name
         self.slug = slugify(name)
         self.description = description
-        self.user_id = user_id
+        self.author_id = author_id
         self.dateline = datetime.now()
 
+class TaskList(Base):
+    __tablename__ = "tasklist"
+    
+    id = Column(Integer, primary_key=True)
+    name = Column(Unicode(100), nullable=False)
+    project_id = Column(Integer, ForeignKey("project.id"), nullable=False)
+    
+    project = relation(Project, backref="tasklists", primaryjoin="TaskList.project_id == Project.id")
+    
+    def __init__(self, name, project_id):
+        self.name = name
+        self.project_id = project_id
+    
+        
 class Task(Base):
     __tablename__ = "task"
 
     id = Column(Integer, primary_key=True)
     task = Column(UnicodeText, nullable=False)
-    project = Column(Integer, ForeignKey("project.id"), nullable=False)
+    project_id = Column(Integer, ForeignKey("project.id"), nullable=False)
+    tasklist_id = Column(Integer, ForeignKey("tasklist.id"), nullable=False)
     user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
     assigned_to = Column(Integer, ForeignKey("user.id"), nullable=False)
     completed = Column(Boolean, nullable=False)
@@ -47,12 +62,15 @@ class Task(Base):
     deadline = Column(DateTime, nullable=True)
     dateline = Column(DateTime, nullable=False)
     
+    tasklist = relation(TaskList, backref="tasks", primaryjoin="TaskList.id == Task.tasklist_id")
+    project = relation(Project, backref="tasks", primaryjoin="Task.project_id == Project.id")
     user = relation(User, backref="tasks", primaryjoin="Task.user_id == User.id")
     assigned_user = relation(User, backref="tasks_assigned", primaryjoin="Task.assigned_to == User.id")
 
-    def __init__(self, task, project, user_id, assigned_to, deadline):
+    def __init__(self, task, tasklist_id, project_id, user_id, assigned_to, deadline):
         self.task = task
-        self.project = project
+        self.tasklist_id = tasklist_id
+        self.project_id = project_id
         self.user_id = user_id
         self.assigned_to = assigned_to
         self.completed = False

@@ -4,7 +4,8 @@
 
 
 <form method="post" action="/tasks/create">
-<input type="hidden" name="project" value="${projectid}" />
+<input type="hidden" name="tasklist_id" value="${tasklist_id}" />
+<input type="hidden" name="project_id" value="${project_id}" />
     <div class="line">
       <div class="unit size1of5">Task:</div>
       <div class="unit size1of5 lastUnit"><input type="text" class="input" name="task" /></div>
@@ -21,7 +22,7 @@
     </div>
     <div class="line">
       <div class="unit size1of5">Deadline:</div>
-      <div class="unit size1of5 lastUnit"><input type="text" class="input" name="deadline" ></div>
+      <div class="unit size1of5 lastUnit"><input type="text" class="input" name="deadline" /></div>
     </div>
     <div>
       <div><input type="submit" value="Create Task" /> </div>
