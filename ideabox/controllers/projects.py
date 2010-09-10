@@ -55,8 +55,8 @@ class ProjectsController(BaseController):
         context = {
             "project": project,
             "tasklists": project.tasklists,
-            "completed_tasks": 0,#completed_tasks,
-            "uncompleted_tasks": 0,#uncompleted_tasks
+            "completed_tasks": completed_tasks,
+            "uncompleted_tasks": uncompleted_tasks
         }
         return render("projects/show.html", context)
 
