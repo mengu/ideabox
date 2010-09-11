@@ -11,7 +11,9 @@
 % for tasklist in tasklists:
 <div class="line">
     <div class="size1of2">
-        <h2>${tasklist.name} <span><a href="/tasks/new?project=${project.id}&tasklist=${tasklist.id}">Create New Task</a></span></h2>    
+        <h2>${tasklist.name}</h2>
+            <a href="/tasks/new?project=${project.id}&tasklist=${tasklist.id}">Create New Task</a>
+            <a href="/tasklists/delete/${tasklist.id}">Delete</a>
     </div>
 </div>
 

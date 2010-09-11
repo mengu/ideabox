@@ -20,3 +20,13 @@ class TasklistsController(BaseController):
         Session.commit()
         
         return redirect("/projects/show/%s" % tasklist.project.id)
+    
+    def delete(self, id):
+        if id is None:
+            abort(404)
+        tasklist = Session.query(TaskList).filter_by(id=id).one()
+        if tasklist is None:
+            abort(404)
+        Session.delete(tasklist)
+        Session.commit()
+        return redirect("/projects/show/%s" % tasklist.project.id)
