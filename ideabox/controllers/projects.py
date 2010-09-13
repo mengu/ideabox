@@ -7,6 +7,7 @@ from pylons.controllers.util import abort, redirect
 from ideabox.lib.base import BaseController, Session, render
 from ideabox.model.project import Project, TaskList, Task
 from ideabox.model.user import User
+import formalchemy
 
 log = logging.getLogger(__name__)
 
@@ -30,7 +31,7 @@ class ProjectsController(BaseController):
                 "author_id": 1
             }
             project = Project(**project_args)
-            project.tasklists = [TaskList("Default Tasks")]
+            project.tasklists = [TaskList("Default Tasks", project.id)]
             Session.add(project)
             Session.commit()
         return redirect("/projects/show/%s" % project.id)

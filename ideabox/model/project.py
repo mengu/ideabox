@@ -26,6 +26,7 @@ class Project(Base):
     
     users = relation(User, secondary=project_member_table, backref="projects")
     author = relation(User, backref="project", primaryjoin="Project.author_id == User.id")
+    tasklists = relation("TaskList", backref="project", primaryjoin="Project.id == TaskList.project_id", cascade="all")
 
     def __init__(self, name, description, author_id):
         self.name = name
@@ -41,8 +42,7 @@ class TaskList(Base):
     name = Column(Unicode(100), nullable=False)
     project_id = Column(Integer, ForeignKey("project.id"), nullable=False)
     
-    project = relation(Project, backref="tasklists", primaryjoin="TaskList.project_id == Project.id")
-    tasks = relation("Task", primaryjoin="TaskList.id == Task.tasklist_id", cascade="all")
+    tasks = relation("Task", backref="tasklit", primaryjoin="TaskList.id == Task.tasklist_id", cascade="all")
     
     def __init__(self, name, project_id):
         self.name = name
@@ -63,7 +63,6 @@ class Task(Base):
     deadline = Column(DateTime, nullable=True)
     dateline = Column(DateTime, nullable=False)
     
-    tasklist = relation(TaskList, primaryjoin="TaskList.id == Task.tasklist_id")
     project = relation(Project, backref="tasks", primaryjoin="Task.project_id == Project.id")
     user = relation(User, backref="tasks", primaryjoin="Task.user_id == User.id")
     assigned_user = relation(User, backref="tasks_assigned", primaryjoin="Task.assigned_to == User.id")
