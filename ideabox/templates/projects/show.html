@@ -10,51 +10,51 @@
 
 % for tasklist in tasklists:
 <div class="line">
-    <div class="size1of2">
-        <h2>${tasklist.name}</h2>
-            <a href="/tasks/new?project=${project.id}&tasklist=${tasklist.id}">Create New Task</a>
-            <a href="/tasklists/delete/${tasklist.id}">Delete</a>
-    </div>
+  <div class="size1of2">
+  <h2>${tasklist.name}</h2>
+  <a href="/tasks/new?project=${project.id}&tasklist=${tasklist.id}">Create New Task</a>
+  <a href="/tasklists/delete/${tasklist.id}">Delete</a>
+  </div>
 </div>
 
 <div class="line headers">
-    <div class="unit size1of5"><strong>Completed</strong></div>
-    <div class="unit size1of3"><strong>Task</strong></div>
-    <div class="unit size1of5"><strong>Assigned to</strong></div>
-    <div class="unit size1of5"><strong>Delete</strong></div>
+  <div class="unit size1of5"><strong>Completed</strong></div>
+  <div class="unit size1of3"><strong>Task</strong></div>
+  <div class="unit size1of5"><strong>Assigned to</strong></div>
+  <div class="unit size1of5"><strong>Delete</strong></div>
 </div>
 
-    % for task in tasklist.tasks:
-    <div class="line">
-        <div class="unit size1of5">
-            <div class="line">
-                <div class="unit size1of5" id="completed_${task.id}">
-                     % if task.completed:
-                     <img src="../../img/check.png" border="0" alt="Completed at ${task.completed_at}" />
-                     % else:
-                     <img src="../../img/undone.png" border="0" />
-                     % endif
-                </div>
-                <div class="unit size1of5 lastUnit checkboxes">
-                    % if task.completed:
-                      <input type="checkbox" id="${task.id}" checked/>
-                    % else:
-                      <input type="checkbox" id="${task.id}" />
-                    % endif
-                </div>
-            </div>
+  % for task in tasklist.tasks:
+  <div class="line">
+    <div class="unit size1of5">
+      <div class="line">
+        <div class="unit size1of5" id="completed_${task.id}">
+          % if task.completed:
+           <img src="../../img/check.png" border="0" alt="Completed at ${task.completed_at}" />
+          % else:
+           <img src="../../img/undone.png" border="0" />
+          % endif
         </div>
-        <div class="unit size1of3"><a href="/tasks/show/${task.id}">${task.task}</a></div>
-        <div class="unit size1of5">${task.assigned_user.firstname} ${task.assigned_user.lastname}</div>
-        <div class="unit size1of5"><a href="/tasks/delete/${task.id}">Delete</a></div>
-        
+        <div class="unit size1of5 lastUnit checkboxes">
+          % if task.completed:
+            <input type="checkbox" id="${task.id}" checked/>
+          % else:
+            <input type="checkbox" id="${task.id}" />
+          % endif
+        </div>
+      </div>
     </div>
-    % endfor
+    <div class="unit size1of3"><a href="/tasks/show/${task.id}">${task.task}</a></div>
+    <div class="unit size1of5">${task.assigned_user.firstname} ${task.assigned_user.lastname}</div>
+    <div class="unit size1of5"><a href="/tasks/delete/${task.id}">Delete</a></div>
+    
+  </div>
+  % endfor
 % endfor
 
 <form method="post" action="/tasklists/create">
-<input type="hidden" name="project_id" value="${project.id}" />
-Create new task list:
-<input type="text" name="tasklist_name" />
-<input type="submit" value="Create" />
+  <input type="hidden" name="project_id" value="${project.id}" />
+  <span>Create new task list:</span>
+  <input type="text" name="tasklist_name" />
+  <input type="submit" value="Create" />
 </form>

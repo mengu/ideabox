@@ -2,17 +2,9 @@
 
 <%def name="title()">Create Project</%def>
 
+<h2>Create a new project</h2>
 
 <form method="post" action="/projects/create">
-    <div>
-      <div>Project name:</div>
-      <div><input type="text" class="input" name="name" /></div>
-    </div>
-    <div>
-      <div>Project description:</div>
-      <div><textarea class="description" name="description"></textarea></div>
-    </div>
-    <div>
-      <div><input type="submit" value="Create Project" /> </div>
-    </div>
+  ${project_form | n}
+  <input type="submit" value="Create Project" />
 </form>

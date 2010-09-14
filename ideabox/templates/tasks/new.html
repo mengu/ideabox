@@ -6,25 +6,25 @@
 <form method="post" action="/tasks/create">
 <input type="hidden" name="tasklist_id" value="${tasklist_id}" />
 <input type="hidden" name="project_id" value="${project_id}" />
-    <div class="line">
-      <div class="unit size1of5">Task:</div>
-      <div class="unit size1of5 lastUnit"><input type="text" class="input" name="task" /></div>
+  <div class="line">
+    <div class="unit size1of5">Task:</div>
+    <div class="unit size1of5 lastUnit"><input type="text" class="input" name="task" /></div>
+  </div>
+  <div class="line">
+    <div class="unit size1of5">Assign to:</div>
+    <div class="unit size1of5 lastUnit">
+      <select name="assigned_to">
+        % for user in users:
+          <option value="${user.id}">${user.firstname} ${user.lastname}</option>
+        % endfor
+      </select>
     </div>
-    <div class="line">
-      <div class="unit size1of5">Assign to:</div>
-      <div class="unit size1of5 lastUnit">
-          <select name="assigned_to">
-              % for user in users:
-              <option value="${user.id}">${user.firstname} ${user.lastname}</option>
-              % endfor
-          </select>
-      </div>
-    </div>
-    <div class="line">
-      <div class="unit size1of5">Deadline:</div>
-      <div class="unit size1of5 lastUnit"><input type="text" class="input" name="deadline" /></div>
-    </div>
-    <div>
-      <div><input type="submit" value="Create Task" /> </div>
-    </div>
+  </div>
+  <div class="line">
+    <div class="unit size1of5">Deadline:</div>
+    <div class="unit size1of5 lastUnit"><input type="text" class="input" name="deadline" /></div>
+  </div>
+  <div>
+    <div><input type="submit" value="Create Task" /> </div>
+  </div>
 </form>

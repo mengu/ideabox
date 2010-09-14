@@ -1,0 +1,9 @@
+<%inherit file="/common/base.html" />
+
+<%def name="title()">Edit Project: ${project.id}</%def>
+
+<h2>Editing ${project.name}</h2>
+<form method="post" action="/projects/save/${project.id}">
+  ${project_form | n}
+  <input type="submit" value="Save" />
+</form>
