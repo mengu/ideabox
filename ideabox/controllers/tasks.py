@@ -7,6 +7,7 @@ from ideabox.lib.base import BaseController, Session, render
 from ideabox.model.project import Task, Note
 from ideabox.model.user import User
 from datetime import datetime
+from formalchemy import FieldSet, Grid
 
 log = logging.getLogger(__name__)
 

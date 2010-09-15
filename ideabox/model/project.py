@@ -34,6 +34,9 @@ class Project(Base):
         self.description = description
         self.author_id = author_id
         self.dateline = datetime.now()
+        
+    def __init__(self):
+        pass
 
 class TaskList(Base):
     __tablename__ = "tasklist"
@@ -42,7 +45,7 @@ class TaskList(Base):
     name = Column(Unicode(100), nullable=False)
     project_id = Column(Integer, ForeignKey("project.id"), nullable=False)
     
-    tasks = relation("Task", backref="tasklit", primaryjoin="TaskList.id == Task.tasklist_id", cascade="all")
+    tasks = relation("Task", backref="tasklist", primaryjoin="TaskList.id == Task.tasklist_id", cascade="all")
     
     def __init__(self, name, project_id):
         self.name = name
