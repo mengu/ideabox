@@ -7,6 +7,7 @@ from pylons.controllers.util import abort, redirect
 from ideabox.lib.base import BaseController, Session, render
 from ideabox.model.project import Project, TaskList, Task
 from ideabox.model.user import User
+import ideabox.model as model
 
 from formalchemy import FieldSet, Grid
 
@@ -21,7 +22,7 @@ project_form.configure(
         project_form.tasklists.hidden(),
         project_form.tasks.hidden(),
     ],
-    exclude = [project_form.project]
+    #exclude = [project_form.project]
 )
 
 
@@ -32,11 +33,12 @@ class ProjectsController(BaseController):
         if "user" not in session and action in filter_actions:
             redirect("/users/login")
 
-    def new(self):       
-        context = {
-            "project_form": project_form.render()
-        }
-        return render("projects/new.html", context)
+    def new(self):
+        return redirect("/projects/edit")
+        #context = {
+        #    "project_form": project_form.render()
+        #}
+        #return render("projects/new.html", context)
 
     def create(self):
         try:
@@ -78,12 +80,26 @@ class ProjectsController(BaseController):
         }
         return render("projects/show.html", context)
 
-    def edit(self, id):
-        project = Session.query(Project).filter_by(id=id).first()
-        if project is None:
-            abort(404)
-        
-        edit_form = project_form.bind(project)
+    def edit(self, id=None):
+        if id is not None:
+            project = Session.query(Project).filter_by(id=id).first()
+            if project is None:
+                abort(404)
+        else:
+            project = model.Project()
+            #project_form.configure(include=[
+            #    project_form.name
+            #])
+            
+        edit_form = project_form.bind(project, data=request.POST or None)
+        if request.POST and edit_form.validate():
+            edit_form.sync()
+            if id:
+                Session.update(project)
+            else:
+                Session.add(project)
+            Session.commit()
+            redirect("/projects/show/%s" % id)
         context = {
             "project": project,
             "project_form": edit_form.render()
@@ -91,22 +107,22 @@ class ProjectsController(BaseController):
         return render("projects/edit.html", context)
     
     
-    def save(self, id):
-        project = Session.query(Project).filter_by(id=id).first()
-        if project is None:
-            abort(404)
-        
-        changed_form = project_form.bind(project, data=request.params)
-
-        if changed_form.validate():
-            changed_form.sync()
-            Session.update(project)
-            Session.commit()
-        else:
-            # TODO pass in validation errors
-            return redirect("/projects/edit/%s" % project.id)
-        
-        return redirect("/projects/show/%s" % project.id)
+    #def save(self, id):
+    #    project = Session.query(Project).filter_by(id=id).first()
+    #    if project is None:
+    #        abort(404)
+    #    
+    #    changed_form = project_form.bind(project, data=request.params)
+    #
+    #    if changed_form.validate():
+    #        changed_form.sync()
+    #        Session.update(project)
+    #        Session.commit()
+    #    else:
+    #        # TODO pass in validation errors
+    #        return redirect("/projects/edit/%s" % project.id)
+    #    
+    #    return redirect("/projects/show/%s" % project.id)
     
     
     def users(self, id):
