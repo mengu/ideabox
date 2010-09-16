@@ -11,48 +11,82 @@
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
 
-body
-{
-    font-family: Verdana, Arial, sans-serif;
+/* ----- General Styles ----- */
+body {
+  height: 100%;
+  font-family: Verdana, Arial, sans-serif;
+  background: #dbdbdb;
 }
 
-strong
-{
-    font-weight: bold;
+strong {
+  font-weight: bold;
 }
 
-h1
-{
-    font-size: 3em;
-    margin-top: 1%;
-    margin-bottom: 1%;
+h1 {
+  font-size: 3em;
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
 
 h1 span { font-size: 0.4em; }
 
-h2
-{
-    font-size: 2em;
-    margin-top: 3%;
-    margin-bottom: 3%;
+h2 {
+  font-size: 2em;
+  margin-top: 3%;
+  margin-bottom: 3%;
 }
 
-.input, .description
-{
-    width: 20em;
-    font-size: 1.2em;
+.input, .description {
+  width: 20em;
+  font-size: 1.2em;
 }
 
-.checkboxes
-{
-    margin-top: 2.5%;
+.checkboxes {
+  margin-top: 2.5%;
 }
 
 .projects { margin-top: 5%; margin-left: 5%; }
 .project { font-size: 1.5em; margin-bottom: 1%; }
 
-.username-list-header
-{
-    margin-top: 2.5%;
+.username-list-header {
+  margin-top: 2.5%;
 }
 
+/* ----- Layout Styles ----- */
+#header {
+  height: 30px;
+  padding: 0 2%;
+  background: #222;
+}
+
+#header .menu {
+  color:#fff;
+  float:right;
+}
+
+#content {
+  width: 960px;
+  padding: 1px 0;
+  margin:0 auto;
+}
+
+#footer {
+}
+
+
+/* ----- Classes ----- */
+.menu ul {
+  display:block;
+  padding: 5px 0;
+}
+
+.menu li {
+  display:inline;
+  padding:0 5px 0 10px;
+  margin:0;
+  border-left: 1px solid #fff;
+}
+
+.menu li:first-child { border:0; }
+
+.menu a { }

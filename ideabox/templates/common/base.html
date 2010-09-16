@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/style/main.css">
     <script type="text/javascript" src="/js/jquery.js"></script>
     <script type="text/javascript" src="/js/main.js"></script>
-    <style type="text/css">
+    <!--style type="text/css">
       html {
         background: #024769;
         color: #fff;
@@ -19,7 +19,7 @@
       }
       .headers { font-size: 1.3em; }
       h2 span { font-size: 0.5em; }
-    </style>
+    </style-->
   </head>
   <body>
     <div id="header">
@@ -39,6 +39,16 @@
 </html>
 
 <%def name="title()"></%def>
-<%def name="header()"></%def>
+
+<%def name="header()">
+  <div class="menu">
+    <ul>    
+      <li><a href=""></a>preferences</li>
+      <li><a href=""></a>sign in/out</li>  
+    </ul>    
+  </div>
+</%def>
+
 <%def name="flash()"></%def>
+
 <%def name="footer()"></%def>
