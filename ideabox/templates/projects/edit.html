@@ -3,6 +3,7 @@
 <%def name="title()">Edit Project: ${project.id}</%def>
 
 <h2>Editing ${project.name}</h2>
+
 % if project.id:
   <form method="post" action="/projects/edit/${project.id}">
 % else:

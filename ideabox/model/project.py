@@ -23,35 +23,34 @@ class Project(Base):
     description = Column(Unicode(300), nullable=False)
     author_id = Column(Integer, ForeignKey("user.id"), nullable=False)
     dateline = Column(DateTime, nullable=False)
-    
-    users = relation(User, secondary=project_member_table, backref="projects")
+
+    #users = relation(User, secondary=project_member_table, backref="projects")
     author = relation(User, backref="project", primaryjoin="Project.author_id == User.id")
     tasklists = relation("TaskList", backref="project", primaryjoin="Project.id == TaskList.project_id", cascade="all")
 
-    def __init__(self, name, description, author_id):
-        self.name = name
-        self.slug = slugify(name)
-        self.description = description
-        self.author_id = author_id
-        self.dateline = datetime.now()
-        
-    def __init__(self):
-        pass
+    def __init__(self, *args, **kwargs):
+        if len(kwargs) > 0:
+            self.name = kwargs["name"]
+            self.slug = slugify(self.name)
+            self.description = kwargs["description"]
+            self.author_id = kwargs["author_id"]
+            self.dateline = datetime.now()
+
 
 class TaskList(Base):
     __tablename__ = "tasklist"
-    
+
     id = Column(Integer, primary_key=True)
     name = Column(Unicode(100), nullable=False)
     project_id = Column(Integer, ForeignKey("project.id"), nullable=False)
-    
+
     tasks = relation("Task", backref="tasklist", primaryjoin="TaskList.id == Task.tasklist_id", cascade="all")
-    
+
     def __init__(self, name, project_id):
         self.name = name
         self.project_id = project_id
-    
-        
+
+
 class Task(Base):
     __tablename__ = "task"
 
@@ -65,7 +64,7 @@ class Task(Base):
     completed_at = Column(DateTime, nullable=True)
     deadline = Column(DateTime, nullable=True)
     dateline = Column(DateTime, nullable=False)
-    
+
     project = relation(Project, backref="tasks", primaryjoin="Task.project_id == Project.id")
     user = relation(User, backref="tasks", primaryjoin="Task.user_id == User.id")
     assigned_user = relation(User, backref="tasks_assigned", primaryjoin="Task.assigned_to == User.id")
@@ -89,7 +88,7 @@ class Note(Base):
     user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
     note = Column(Unicode(300), nullable=False)
     dateline = Column(DateTime, nullable=False)
-    
+
     user = relation(User, backref="note", primaryjoin="Note.user_id == User.id")
 
     def __init__(self, project, task, author, note):
@@ -109,10 +108,10 @@ class Ticket(Base):
     status = Column(Integer, nullable=False)
     priority = Column(Integer, nullable=False)
     dateline = Column(DateTime, nullable=False)
-    
-    project = relation(Project, backref="project", primaryjoin="Ticket.project_id == Project.id")
+
+    project = relation(Project, backref="tickets", primaryjoin="Ticket.project_id == Project.id")
     user = relation(User, backref="tickets", primaryjoin="Ticket.user_id == User.id")
-    
+
     def __init__(self, project_id, user_id, body, status, priority):
         self.project_id = project_id
         self.user_id = user_id
