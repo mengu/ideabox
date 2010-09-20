@@ -1,0 +1,9 @@
+<%inherit file="/common/base.html" />
+
+<%def name="title()">Edit task</%def>
+
+
+<form method="post" action="/tasks/edit/${task.id}">
+  ${task_form | n}
+  <input type="submit" value="Create Task" />
+</form>

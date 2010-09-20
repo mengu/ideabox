@@ -1,11 +1,13 @@
 <%inherit file="/common/base.html" />
 
-<%def name="title()">IdeaBox Tasks</%def>
+<%def name="title()">Tasks</%def>
 
 
 
-<h1>${task.task}</h1> <div><a href="/tasks/complete/${task.id}">mark as completed</a></div>
+<h1>${task.task}</h1>
+  <div><a href="/tasks/complete/${task.id}">mark as completed</a></div>
   <div><a href="/projects/show/${task.tasklist.project_id}">Return to the project</a></div>
+  <div><a href="/tasks/edit/${task.id}">edit</a></div>
 
 <h2>Completed: <strong>
   % if task.completed:
