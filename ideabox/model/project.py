@@ -63,21 +63,32 @@ class Task(Base):
     completed = Column(Boolean, nullable=False)
     completed_at = Column(DateTime, nullable=True)
     deadline = Column(DateTime, nullable=True)
-    dateline = Column(DateTime, nullable=False)
+    dateline = Column(DateTime, nullable=False, default=datetime.now())
 
     project = relation(Project, backref="tasks", primaryjoin="Task.project_id == Project.id")
-    user = relation(User, backref="tasks", primaryjoin="Task.user_id == User.id")
+    #user = relation(User, backref="tasks", primaryjoin="Task.user_id == User.id")
     assigned_user = relation(User, backref="tasks_assigned", primaryjoin="Task.assigned_to == User.id")
 
-    def __init__(self, task, tasklist_id, project_id, user_id, assigned_to, deadline):
-        self.task = task
-        self.tasklist_id = tasklist_id
-        self.project_id = project_id
-        self.user_id = user_id
-        self.assigned_to = assigned_to
-        self.completed = False
-        self.deadline = deadline
-        self.dateline = datetime.now()
+    #def __init__(self, task, tasklist_id, project_id, user_id, assigned_to, deadline):
+    #    self.task = task
+    #    self.tasklist_id = tasklist_id
+    #    self.project_id = project_id
+    #    self.user_id = user_id
+    #    self.assigned_to = assigned_to
+    #    self.completed = False
+    #    self.deadline = deadline
+    #    self.dateline = datetime.now()
+
+    def __init__(self, *args, **kwargs):
+        if len(kwargs) > 0:
+            self.task = kwargs["task"]
+            self.tasklist_id = kwargs["tasklist_id"]
+            self.project_id = kwargs["project_id"]
+            self.user_id = kwargs["user_id"]
+            self.assigned_to = kwargs["assigned_to"]
+            self.completed = False
+            self.deadline = kwargs["deadline"]
+
 
 class Note(Base):
     __tablename__ = "note"
