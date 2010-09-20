@@ -38,10 +38,12 @@ class ProjectsController(BaseController):
 
     def create(self):
         create_form = project_form.bind(Project, data=request.params)
-        if create_form.validate():
+        if request.POST and create_form.validate():
             project_args = {
-                "name": request.params["Project--name"],
-                "description": request.params["Project--description"],
+                #"name": request.params["Project--name"],
+                "name": create_form.name.value,
+                #"description": request.params["Project--description"],
+                "description": create_form.description.value,
                 "author_id": 1, # TODO set this based on logged-in user
             }
 
@@ -87,16 +89,14 @@ class ProjectsController(BaseController):
                 abort(404)
         else:
             return redirect("/projects/new")
-
         edit_form = project_form.bind(project, data=request.POST or None)
         if request.POST and edit_form.validate():
             edit_form.sync()
+            # NOTE id is probably never none, consider removing
             if id is None:
                 Session.add(project)
             Session.commit()
             redirect("/projects/show/%s" % id)
-        if edit_form.errors:
-            print edit_form.errors
         context = {
             "project": project,
             "project_form": edit_form.render(),
