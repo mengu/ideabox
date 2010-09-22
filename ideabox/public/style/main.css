@@ -15,7 +15,8 @@
 body {
   height: 100%;
   font-family: Verdana, Arial, sans-serif;
-  background: #dbdbdb;
+  /*background: #dbdbdb;*/
+  background: #fdfdfd;
 }
 
 strong {
@@ -23,7 +24,7 @@ strong {
 }
 
 h1 {
-  font-size: 3em;
+  font-size: 2em;
   margin-top: 1%;
   margin-bottom: 1%;
 }
@@ -31,9 +32,13 @@ h1 {
 h1 span { font-size: 0.4em; }
 
 h2 {
-  font-size: 2em;
-  margin-top: 3%;
-  margin-bottom: 3%;
+  font-size: 1.5em;
+  /*margin-top: 3%;
+  margin-bottom: 3%;*/
+}
+
+a{
+  text-decoration: none;
 }
 
 .input, .description {
@@ -45,8 +50,8 @@ h2 {
   margin-top: 2.5%;
 }
 
-.projects { margin-top: 5%; margin-left: 5%; }
-.project { font-size: 1.5em; margin-bottom: 1%; }
+/*.projects { margin-top: 5%; margin-left: 5%; }
+.project { font-size: 1.5em; margin-bottom: 1%; }*/
 
 .username-list-header {
   margin-top: 2.5%;
@@ -54,20 +59,29 @@ h2 {
 
 /* ----- Layout Styles ----- */
 #header {
-  height: 30px;
-  padding: 0 2%;
+  height: 80px;
   background: #222;
+  overflow: hidden;
 }
 
 #header .menu {
-  color:#fff;
+  height: 30px;
+  margin: 50px 0 0;
+  float: left;
+  font-size: 1.5em;
+}
+
+#header .menu a { color: #fff; }
+#header .menu a:hover { background:#333; }
+
+#header .user {
   float:right;
 }
 
 #content {
-  width: 960px;
-  padding: 1px 0;
-  margin:0 auto;
+  padding: 20px 0;
+  color: #222;
+  font-size:1.2em;
 }
 
 #footer {
@@ -75,18 +89,41 @@ h2 {
 
 
 /* ----- Classes ----- */
+.inner {
+  width: 960px;
+  margin: 0 auto;
+}
+
+.divider {
+  border-bottom: 1px solid #999;
+}
+
+.actions {
+  float: right;
+}
+
 .menu ul {
-  display:block;
-  padding: 5px 0;
+  /*display:block;*/
+  /*padding: 5px 0;*/
 }
 
 .menu li {
   display:inline;
-  padding:0 5px 0 10px;
+  padding:0 10px 0 0;
   margin:0;
-  border-left: 1px solid #fff;
+  /*border-left: 1px solid #fff;*/
 }
 
-.menu li:first-child { border:0; }
+.menu li:first-child { /*border:0;*/ }
 
-.menu a { }
+.menu a {
+  text-decoration: none;
+}
+
+.project {
+
+}
+
+.tasklist {
+  margin: 0 0 20px;
+}

@@ -8,30 +8,20 @@
     <link rel="stylesheet" href="/style/main.css">
     <script type="text/javascript" src="/js/jquery.js"></script>
     <script type="text/javascript" src="/js/main.js"></script>
-    <!--style type="text/css">
-      html {
-        background: #024769;
-        color: #fff;
-      }
-      a { 
-        color: #95CBE9; 
-        text-decoration: none; 
-      }
-      .headers { font-size: 1.3em; }
-      h2 span { font-size: 0.5em; }
-    </style-->
   </head>
   <body>
     <div id="header">
       ${self.header()}
     </div>
-    
+
     <div id="content">
-      <div class="msg">${self.flash()}</div>
-      
-      ${next.body()}
+      <div class="inner">
+        <div class="msg">${self.flash()}</div>
+
+        ${next.body()}
+      </div>
     </div>
-    
+
     <div id="footer">
       ${self.footer()}
     </div>
@@ -41,11 +31,19 @@
 <%def name="title()"></%def>
 
 <%def name="header()">
-  <div class="menu">
-    <ul>    
-      <li><a href=""></a>preferences</li>
-      <li><a href=""></a>sign in/out</li>  
-    </ul>    
+  <div class="inner">
+    <!--div id="logo"><a href="/">ideabox</a></div-->
+    <div class="menu">
+      <ul>
+        <li><a href="/projects">Projects</a>
+      </ul>
+    </div>
+    <!--div class="user">
+      <ul>
+        <li><a href=""></a>preferences</li>
+        <li><a href=""></a>sign in/out</li>
+      </ul>
+    </div-->
   </div>
 </%def>
 

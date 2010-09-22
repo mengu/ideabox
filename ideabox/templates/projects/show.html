@@ -3,54 +3,64 @@
 <%def name="title()">${project.name}</%def>
 
 
-<h1>${project.name} <span>${ project.description}</span></h1>
-<a href="/projects/edit/${project.id}">edit</a>
+<div class="divider">
+  <div class="actions">
+    <a href="/projects/edit/${project.id}">edit</a>
+  </div>
+  <h1>${project.name}</h1>
+</div>
 
+<div class="project-description">${ project.description}</div>
 <div style="margin-bottom: 3%;">There are <strong>${completed_tasks} completed tasks</strong> and <strong>${uncompleted_tasks} uncompleted tasks</strong>.</div>
 
 
 % for tasklist in tasklists:
-<div class="line">
-  <div class="size1of2">
-  <h2>${tasklist.name}</h2>
-  <a href="/tasks/new?project=${project.id}&tasklist=${tasklist.id}">Create New Task</a>
-  <a href="/tasklists/delete/${tasklist.id}">Delete</a>
-  </div>
-</div>
-
-<div class="line headers">
-  <div class="unit size1of5"><strong>Completed</strong></div>
-  <div class="unit size1of3"><strong>Task</strong></div>
-  <div class="unit size1of5"><strong>Assigned to</strong></div>
-  <div class="unit size1of5"><strong>Delete</strong></div>
-</div>
-
-  % for task in tasklist.tasks:
+<div class="tasklist">
   <div class="line">
-    <div class="unit size1of5">
-      <div class="line">
-        <div class="unit size1of5" id="completed_${task.id}">
+    <div class="">
+      <div class="actions">
+        <a href="">Edit</a>
+        <a href="/tasklists/delete/${tasklist.id}">Delete</a>
+      </div>
+      <h2>${tasklist.name}</h2>
+    </div>
+  </div>
+
+  <div class="line headers">
+    <div class="unit size1of4"><strong>Completed</strong></div>
+    <div class="unit size1of4"><strong>Task</strong></div>
+    <div class="unit size1of4"><strong>Assigned to</strong></div>
+    <div class="unit size1of4"><strong>Delete</strong></div>
+  </div>
+
+    % for task in tasklist.tasks:
+    <div class="line">
+      <div class="unit size1of4">
+        <div class="line">
+          <div class="unit size1of4" id="completed_${task.id}">
           % if task.completed:
-           <img src="../../img/check.png" border="0" alt="Completed at ${task.completed_at}" />
-          % else:
-           <img src="../../img/undone.png" border="0" />
-          % endif
-        </div>
-        <div class="unit size1of5 lastUnit checkboxes">
+             <img src="../../img/check.png" border="0" alt="Completed at ${task.completed_at}" />
+            % else:
+             <img src="../../img/undone.png" border="0" />
+            % endif
+          </div>
+          <div class="unit size1of4 lastUnit checkboxes">
           % if task.completed:
-            <input type="checkbox" id="${task.id}" checked/>
-          % else:
-            <input type="checkbox" id="${task.id}" />
-          % endif
+              <input type="checkbox" id="${task.id}" checked/>
+            % else:
+              <input type="checkbox" id="${task.id}" />
+            % endif
+          </div>
         </div>
       </div>
+      <div class="unit size1of4"><a href="/tasks/show/${task.id}">${task.task}</a></div>
+      <div class="unit size1of4">${task.assigned_user.firstname} ${task.assigned_user.lastname}</div>
+      <div class="unit size1of4"><a href="/tasks/delete/${task.id}">Delete</a></div>
+
     </div>
-    <div class="unit size1of3"><a href="/tasks/show/${task.id}">${task.task}</a></div>
-    <div class="unit size1of5">${task.assigned_user.firstname} ${task.assigned_user.lastname}</div>
-    <div class="unit size1of5"><a href="/tasks/delete/${task.id}">Delete</a></div>
-    
+    % endfor
+    <a href="/tasks/new?project=${project.id}&tasklist=${tasklist.id}">Create New Task</a>
   </div>
-  % endfor
 % endfor
 
 <form method="post" action="/tasklists/create">
