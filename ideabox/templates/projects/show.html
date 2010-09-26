@@ -1,3 +1,12 @@
+<%!
+  def trunc(task):
+      if len(task) > 65:
+          return task[0:65] + '<a href="#">[...]</a>' + '<span class="truncated">'+task+'</span>'
+      else:
+          return task
+%>
+
+
 <%inherit file="/common/base.html" />
 
 <%def name="title()">${project.name}</%def>
@@ -5,8 +14,8 @@
 
 <div class="divider">
   <div class="actions">
-    <a href="/projects/edit/${project.id}" class="edit">edit</a>
-    <a href="projects/delete/${project.id}" class="delete">delete</a>
+    <a href="/projects/edit/${project.id}" class="edit" title="Edit Project">edit</a>
+    <a href="projects/delete/${project.id}" class="delete" title="Delete Project">delete</a>
   </div>
   <h1>${project.name}</h1>
 </div>
@@ -19,12 +28,14 @@
 
 % for tasklist in tasklists:
 <div class="tasklist">
-  <div class="line">
-    <div class="actions">
-      <a href="">edit</a>
-      <a href="/tasklists/delete/${tasklist.id}">delete</a>
+  <div class="divider">
+    <div class="line">
+      <div class="actions">
+        <a href="" class="edit" title="Edit List">edit</a>
+        <a href="/tasklists/delete/${tasklist.id}" class="delete" title="Delete List">delete</a>
+      </div>
+      <h2>${tasklist.name}</h2>
     </div>
-    <h2>${tasklist.name}</h2>
   </div>
 
   <div class="line headers">
@@ -58,12 +69,13 @@
         <!--/div-->
       </div>
       <!--div class="task-desc unit"><a href="/tasks/show/${task.id}">${task.task}</a></div-->
-      <div class="task-desc unit">${task.task}</div>
+      <div class="task-desc unit">${task.task | n, trunc}</div>
       <div class="assigned unit">${task.assigned_user.firstname} ${task.assigned_user.lastname}</div>
       <div class="deadline unit">${task.deadline}10/5/10 5:30pm</div>
+      <!--div class="unit task-actions"-->
       <div class="unit">
-        <a href="/tasks/edit/${task.id}">edit</a>
-        <a href="/tasks/delete/${task.id}">del</a>
+        <a href="/tasks/edit/${task.id}" class="edit" title="Edit Task">edit</a>
+        <a href="/tasks/delete/${task.id}" class="delete" title="Delete Task">del</a>
       </div>
       </li>
     <% row += 1 %>

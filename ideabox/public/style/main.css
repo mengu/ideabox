@@ -124,11 +124,25 @@ a {
 }
 
 a.edit {
-  /* put image here */
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: 0 2px;
+  background: url('/img/document--pencil.png') no-repeat;
+  float: left;
+  text-indent: -9999px;
+  outline: 0;
 }
 
-a.delete {
-  /* put delete image here */
+.delete {
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: 0 2px;
+  background: url('/img/minus-button.png') no-repeat;
+  float: left;
+  text-indent: -9999px;
+  outline: 0;
 }
 /* ----- Project styles ----- */
 .project {
@@ -149,12 +163,17 @@ a.delete {
   margin: 0 0 20px;
 }
 
+.tasklist .divider {
+  margin: 0 0 5px;
+  border-bottom: 1px solid #dedede;
+}
+
 .status {
   width: 100px;
 }
 
 .task-desc {
-  width: 500px;
+  width: 520px;
 }
 
 .assigned {
@@ -185,7 +204,19 @@ li.task:hover {
   background: #e6e6e6;
 }
 
+li.task:hover .task-actions {
+  display: block;
+}
+
 .handle {
   margin: 0 2px;
   cursor: move;
- }
+}
+
+.truncated {
+  display: none;
+}
+
+.task-actions {
+  display: none;
+}
