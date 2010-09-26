@@ -4,7 +4,7 @@ from pylons import request, response, session, tmpl_context as c, url
 from pylons.controllers.util import abort, redirect
 
 from ideabox.lib.base import BaseController, Session, render
-from ideabox.model.project import Task, Note
+from ideabox.model.project import Task, TaskList, Note
 from ideabox.model.user import User
 from datetime import datetime
 from formalchemy import FieldSet, Grid, Field
@@ -68,7 +68,6 @@ class TasksController(BaseController):
         }
         return render("tasks/new.html", context)
 
-
     def show(self, id):
         try:
             task = Session.query(Task).filter_by(id=id).one()
@@ -77,7 +76,6 @@ class TasksController(BaseController):
         notes = Session.query(Note).filter_by(task=id).all()
         return render("tasks/show.html", {"task": task, "notes": notes})
 
-
     def edit(self, id=None):
         if id is None:
             abort(404)
@@ -85,7 +83,13 @@ class TasksController(BaseController):
         if task is None:
             abort(404)
         edit_form = task_form.bind(task, data=request.POST or None)
+        tasklist = Field('tasklist_id').dropdown(
+            options=[(tasklist.name, tasklist.id) for tasklist in Session.query(TaskList).\
+                        filter_by(project_id=task.project_id).all()]).\
+            required().label('Task List')
+        edit_form.append(tasklist)
         if request.POST and edit_form.validate():
+            task.tasklist = Session.query(TaskList).filter_by(id=request.POST.values()[-1]).one()
             edit_form.sync()
             Session.commit()
             return redirect("/projects/show/%s" % task.project_id)
@@ -94,7 +98,6 @@ class TasksController(BaseController):
             "task_form": edit_form.render()
         }
         return render("tasks/edit.html", context)
-
 
     def complete(self, id):
         try:
