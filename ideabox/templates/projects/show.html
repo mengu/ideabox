@@ -5,60 +5,76 @@
 
 <div class="divider">
   <div class="actions">
-    <a href="/projects/edit/${project.id}">edit</a>
+    <a href="/projects/edit/${project.id}" class="edit">edit</a>
+    <a href="projects/delete/${project.id}" class="delete">delete</a>
   </div>
   <h1>${project.name}</h1>
 </div>
 
 <div class="project-description">${ project.description}</div>
-<div style="margin-bottom: 3%;">There are <strong>${completed_tasks} completed tasks</strong> and <strong>${uncompleted_tasks} uncompleted tasks</strong>.</div>
+<div class="task-count">
+  There are <strong>${completed_tasks} completed tasks</strong> and <strong>${uncompleted_tasks} uncompleted tasks</strong>.
+</div>
 
 
 % for tasklist in tasklists:
 <div class="tasklist">
   <div class="line">
-    <div class="">
-      <div class="actions">
-        <a href="">Edit</a>
-        <a href="/tasklists/delete/${tasklist.id}">Delete</a>
-      </div>
-      <h2>${tasklist.name}</h2>
+    <div class="actions">
+      <a href="">edit</a>
+      <a href="/tasklists/delete/${tasklist.id}">delete</a>
     </div>
+    <h2>${tasklist.name}</h2>
   </div>
 
   <div class="line headers">
-    <div class="unit size1of4"><strong>Completed</strong></div>
-    <div class="unit size1of4"><strong>Task</strong></div>
-    <div class="unit size1of4"><strong>Assigned to</strong></div>
-    <div class="unit size1of4"><strong>Delete</strong></div>
+    <div class="status unit"><strong>Status</strong></div>
+    <div class="task-desc unit"><strong>Task</strong></div>
+    <div class="assigned unit"><strong>Assigned to</strong></div>
+    <div class="deadline unit"><strong>Due</strong></div>
   </div>
 
+  <ul>
+    <% row = 0 %>
     % for task in tasklist.tasks:
-    <div class="line">
-      <div class="unit size1of4">
-        <div class="line">
-          <div class="unit size1of4" id="completed_${task.id}">
+    <li class="line task ${row%2 and 'odd' or 'even'}">
+      <div class="status unit">
+        <!--div class="line"-->
+          <div class="unit" id="completed_${task.id}">
+            <img src="/img/grid-dot.png" class="handle" />
           % if task.completed:
              <img src="../../img/check.png" border="0" alt="Completed at ${task.completed_at}" />
             % else:
              <img src="../../img/undone.png" border="0" />
             % endif
           </div>
-          <div class="unit size1of4 lastUnit checkboxes">
+          <div class="unit checkboxes">
           % if task.completed:
               <input type="checkbox" id="${task.id}" checked/>
             % else:
               <input type="checkbox" id="${task.id}" />
             % endif
           </div>
-        </div>
+        <!--/div-->
       </div>
-      <div class="unit size1of4"><a href="/tasks/show/${task.id}">${task.task}</a></div>
-      <div class="unit size1of4">${task.assigned_user.firstname} ${task.assigned_user.lastname}</div>
-      <div class="unit size1of4"><a href="/tasks/delete/${task.id}">Delete</a></div>
-
-    </div>
+      <!--div class="task-desc unit"><a href="/tasks/show/${task.id}">${task.task}</a></div-->
+      <div class="task-desc unit">${task.task}</div>
+      <div class="assigned unit">${task.assigned_user.firstname} ${task.assigned_user.lastname}</div>
+      <div class="deadline unit">${task.deadline}10/5/10 5:30pm</div>
+      <div class="unit">
+        <a href="/tasks/edit/${task.id}">edit</a>
+        <a href="/tasks/delete/${task.id}">del</a>
+      </div>
+      </li>
+    <% row += 1 %>
     % endfor
+
+    % if len(tasklist.tasks) == 0:
+      <li class="line task even no-tasks">
+        There are no tasks. <a href="/tasks/new?project=${project.id}&tasklist=${tasklist.id}">Create one</a>.
+      </li>
+    % endif
+  </ul>
     <a href="/tasks/new?project=${project.id}&tasklist=${tasklist.id}">Create New Task</a>
   </div>
 % endfor

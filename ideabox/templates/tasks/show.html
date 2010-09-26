@@ -9,12 +9,12 @@
   <div><a href="/projects/show/${task.tasklist.project_id}">Return to the project</a></div>
   <div><a href="/tasks/edit/${task.id}">edit</a></div>
 
-<h2>Completed: <strong>
+<p>Completed: <strong>
   % if task.completed:
     completed!
   % else:
     not completed!
-  % endif</strong></h2>
+  % endif</strong></p>
 % if task.completed:
 <strong>Completed at: ${task.completed_at}</strong>
 % endif
