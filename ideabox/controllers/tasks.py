@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 
 task_form = FieldSet(Task)
 task_form.configure(include=[
-    task_form.task,
+    task_form.task.textarea(),
     task_form.assigned_to.dropdown(
         options=[(user.username, user.id) for user in Session.query(User).all()]
     ).required(),
