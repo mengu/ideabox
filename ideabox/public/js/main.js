@@ -1,11 +1,32 @@
-$(document).ready(function(){
-    $("input[type='checkbox']").click(function(){
-       var completed = $(this).attr('checked') ? true : false;
-       var completedImage = completed ? '<img src="../../img/check.png" border="0" />' : '<img src="../../img/undone.png" border="0" />';
-       $.post('/tasks/complete/'+this.id, {"completed": completed});
-       $("#completed_"+this.id).html(completedImage);
-    });
+var ideabox = {
+  // Function to toggle the status of a task
+  toggleComplete: function() {
+    var completed = !!$(this).attr('checked');
+    var image = completed ? 'check.png' : 'undone.png';
+    
+    $.post('/tasks/complete/'+this.id, {"completed": completed});
+    
+    toast = $('#completed_'+this.id).children('img')[0].src = '/img/' + image;
+  },
 
+  // Function to toggle/expand a collapsed task
+  expandTask: function(e) {
+    // TODO write this
+
+  }
+}
+
+
+$(document).ready(function(){
+    // TODO use event delegation for the task lists
+
+    // TODO this will select all checkboxes where this code runs, should be more specific
+    $("input[type='checkbox']").click(ideabox.toggleComplete);
+    
+    // Show the full description when a task is expanded
+    $(".expandTask").click(ideabox.expandTask);  
+    
+    // TODO describe this
     if (($("input").size > 0) && ($("input").attr("checked").size > 0)) {
         $("input").attr("checked").css("background", "#000");
     }

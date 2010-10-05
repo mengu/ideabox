@@ -1,7 +1,9 @@
 <%!
+  ## TODO move this somewhere global
   def trunc(task):
       if len(task) > 65:
-          return task[0:65] + '<a href="#">[...]</a>' + '<span class="truncated">'+task+'</span>'
+          truncated = '<span>' + task[0:65] + '</span><a href="#" class="expandTask">[...]</a>' + '<span class="truncated">'+task+'</span>'
+          return truncated
       else:
           return task
 %>
@@ -52,7 +54,7 @@
       <div class="status unit">
         <!--div class="line"-->
           <div class="unit" id="completed_${task.id}">
-            <img src="/img/grid-dot.png" class="handle" />
+            <!--img src="/img/grid-dot.png" class="handle" /-->
           % if task.completed:
              <img src="../../img/check.png" border="0" alt="Completed at ${task.completed_at}" />
             % else:

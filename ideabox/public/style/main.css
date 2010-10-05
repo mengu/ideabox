@@ -48,7 +48,7 @@ a {
 
 .checkboxes {
   /*margin-top: 2.5%;*/
-  margin: 0 5px;
+  margin: 2px 5px;
 }
 
 /*.projects { margin-top: 5%; margin-left: 5%; }
@@ -169,7 +169,8 @@ a.edit {
 }
 
 .status {
-  width: 100px;
+  width: 95px;
+  padding: 0 0 0 5px;
 }
 
 .task-desc {
@@ -189,7 +190,7 @@ a.edit {
 }
 
 .task {
-  padding: 2px 0;
+  padding: 5px 0;
 }
 
 .no-tasks {
