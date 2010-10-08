@@ -11,8 +11,10 @@ var ideabox = {
 
   // Function to toggle/expand a collapsed task
   expandTask: function(e) {
-    // TODO write this
-
+    e.preventDefault();
+    $(this).prev('span').hide();
+    $(this).hide();
+    $(this).next('span').show();
   }
 }
 

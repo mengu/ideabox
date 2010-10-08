@@ -144,6 +144,13 @@ a.edit {
   text-indent: -9999px;
   outline: 0;
 }
+.edit-form label {
+  display: block;
+  width: 150px;
+  float: left;
+  padding: 0 10px 0 0;
+  text-align: right;
+}
 /* ----- Project styles ----- */
 .project {
 
@@ -174,7 +181,8 @@ a.edit {
 }
 
 .task-desc {
-  width: 520px;
+  width: 510px;
+  padding: 0 10px 0 0;
 }
 
 .assigned {

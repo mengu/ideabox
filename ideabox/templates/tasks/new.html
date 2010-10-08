@@ -3,7 +3,7 @@
 <%def name="title()">Create new task</%def>
 
 
-<form method="post" action="/tasks/create">
+<form method="post" action="/tasks/create" class="edit-form">
   ${task_form | n}
   <input type="hidden" name="tasklist_id" value="${tasklist_id}" />
   <input type="hidden" name="project_id" value="${project_id}" />
