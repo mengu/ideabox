@@ -5,10 +5,16 @@
 <h2>Editing ${project.name}</h2>
 
 % if project.id:
-<form method="post" action="/projects/edit/${project.id}" class="edit-form">
+  <form method="post" action="/projects/edit/${project.id}" class="edit-form">
 % else:
   <form method="post" action="/projects/edit">
 % endif
+
   ${project_form | n}
-  <input type="submit" value="Save" />
+
+  <div class="control-buttons">
+    <input type="submit" value="Save" />
+    <a href="/projects/show/${project.id}">Back</a>
+  </div>
+
 </form>
