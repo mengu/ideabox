@@ -15,7 +15,7 @@
 
 
 <div class="divider">
-  <div class="actions">
+  <div class="actions heading">
     <a href="/projects/edit/${project.id}" class="edit" title="Edit Project">edit</a>
     <a href="projects/delete/${project.id}" class="delete" title="Delete Project">delete</a>
   </div>
@@ -76,6 +76,7 @@
       <div class="deadline unit">${task.deadline}10/5/10 5:30pm</div>
       <!--div class="unit task-actions"-->
       <div class="unit">
+        <a href="/tasks/show/${task.id}" class="notes">notes</a>
         <a href="/tasks/edit/${task.id}" class="edit" title="Edit Task">edit</a>
         <a href="/tasks/delete/${task.id}" class="delete" title="Delete Task">del</a>
       </div>
