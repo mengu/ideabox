@@ -26,7 +26,8 @@ class Project(Base):
 
     #users = relation(User, secondary=project_member_table, backref="projects")
     author = relation(User, backref="project", primaryjoin="Project.author_id == User.id")
-    tasklists = relation("TaskList", backref="project", primaryjoin="Project.id == TaskList.project_id", cascade="all")
+    tasklists = relation("TaskList", backref="project", 
+        primaryjoin="Project.id == TaskList.project_id", cascade="all")
 
     def __init__(self, *args, **kwargs):
         if len(kwargs) > 0:
@@ -44,7 +45,8 @@ class TaskList(Base):
     name = Column(Unicode(100), nullable=False)
     project_id = Column(Integer, ForeignKey("project.id"), nullable=False)
 
-    tasks = relation("Task", backref="tasklist", primaryjoin="TaskList.id == Task.tasklist_id", cascade="all")
+    tasks = relation("Task", backref="tasklist", primaryjoin="TaskList.id == Task.tasklist_id", 
+        cascade="all", order_by=["task.completed", "task.task"])
 
     def __init__(self, name, project_id):
         self.name = name
