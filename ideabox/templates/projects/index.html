@@ -4,10 +4,15 @@
 
 
 <div class="projects">
-% for project in projects:
-  <div class="project"><a href="/projects/show/${project.id}">${project.name}</a> - 
-    ${project.description}
-  </div>
-% endfor
+% if len(projects) > 0:  
+  % for project in projects:
+    <div class="project"><a href="/projects/show/${project.id}">${project.name}</a> - 
+      ${project.description}
+    </div>
+  % endfor
+  <p><a href="/projects/new">Create new project</a>.</p>
+% else :
+  <p>There are currently no projects. <a href="/projects/new">Create one</a>.</p>
+% endif 
 </div>
 

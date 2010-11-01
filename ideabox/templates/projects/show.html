@@ -33,7 +33,7 @@
   <div class="divider">
     <div class="line">
       <div class="actions">
-        <a href="" class="edit" title="Edit List">edit</a>
+        <a href="/tasklists/edit/${tasklist.id}" class="edit" title="Edit List">edit</a>
         <a href="/tasklists/delete/${tasklist.id}" class="delete" title="Delete List">delete</a>
       </div>
       <h2>${tasklist.name}</h2>
@@ -63,9 +63,9 @@
           </div>
           <div class="unit checkboxes">
           % if task.completed:
-              <input type="checkbox" id="${task.id}" checked/>
+              <input type="checkbox" class="toggleStatus" id="${task.id}" checked/>
             % else:
-              <input type="checkbox" id="${task.id}" />
+              <input type="checkbox" class="toggleStatus" id="${task.id}" />
             % endif
           </div>
         <!--/div-->
