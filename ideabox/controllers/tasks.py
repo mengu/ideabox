@@ -17,7 +17,7 @@ task_form.configure(include=[
     task_form.assigned_to.dropdown(
         options=[(user.username, user.id) for user in Session.query(User).all()]
     ).required(),
-    task_form.deadline.textarea(),
+    task_form.deadline.with_html(class_='widthAuto'),
     #task_form.tasklist_id,
     #task_form.project_id.hidden(),
 ])

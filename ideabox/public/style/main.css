@@ -177,6 +177,7 @@ a.edit {
 .control-buttons {
   margin: 0 0 0 155px;
 }
+.edit-form input.widthAuto { width: auto; }
 /* ----- Project styles ----- */
 .project {
 
