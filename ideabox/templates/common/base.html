@@ -39,12 +39,16 @@
         <li><a href="/projects">Projects</a></li>
       </ul>
     </div>
-    <!--div class="user">
+    <div class="user">
       <ul>
-        <li><a href=""></a>preferences</li>
-        <li><a href=""></a>sign in/out</li>
+        % if 'user' in session:
+        <li><a href="/users/edit/${session['user']['id']}">Preferences</a></li>
+        <li><a href="/users/logout">Sign Out</a></li>
+        % else:
+        <li><a href="/users/login">Sign In</a></li>
+        %endif
       </ul>
-    </div-->
+    </div>
   </div>
 </%def>
 

@@ -18,12 +18,12 @@ class User(Base):
     username = Column(Unicode(100), unique=True)
     email = Column(Unicode(150), unique=True)
     password = Column(Unicode(32))
-    joindate = Column(DateTime)
+    joindate = Column(DateTime, default='now()')
 
-    def __init__(self, firstname, lastname, username, email, password):
-        self.firstname = firstname
-        self.lastname = lastname
-        self.username = username
-        self.email = email
-        self.password = password
-        self.joindate = datetime.now()
+    def __init__(self, *args, **kwargs):
+        if len(kwargs) > 0:
+            self.firstname = kwargs['firstname']
+            self.lastname = kwargs['lastname']
+            self.username = kwargs['username']
+            self.email = kwargs['email']
+            self.password = kwargs['password']

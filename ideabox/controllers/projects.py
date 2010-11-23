@@ -1,5 +1,6 @@
 import logging
 import json
+from formalchemy import FieldSet, Grid
 
 from pylons import request, response, session, tmpl_context as c, url
 from pylons.controllers.util import abort, redirect
@@ -8,8 +9,6 @@ from ideabox.lib.base import BaseController, Session, render
 from ideabox.model.project import Project, TaskList, Task
 from ideabox.model.user import User
 import ideabox.model as model
-
-from formalchemy import FieldSet, Grid
 
 log = logging.getLogger(__name__)
 
@@ -20,14 +19,16 @@ project_form.configure(
         project_form.description.textarea(),
     ]
 )
+# TODO project description will get cut off after 300 chars. The use should be warned.
 
 
 class ProjectsController(BaseController):
 
     def __before__(self, action, **params):
-        filter_actions = ["new", "edit", "create", "update", "delete"]
+        filter_actions = ["new", "edit", "create", "update", "delete", 'index']
         if "user" not in session and action in filter_actions:
             redirect("/users/login")
+
 
     def new(self):
         context = {
@@ -46,7 +47,6 @@ class ProjectsController(BaseController):
                 "description": create_form.description.value,
                 "author_id": 1, # TODO set this based on logged-in user
             }
-
             project = Project(**project_args)
             project.tasklists = [TaskList("Tasks", project.id)]
             Session.add(project)
