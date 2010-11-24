@@ -180,7 +180,7 @@ a.edit {
 .edit-form input.widthAuto { width: auto; }
 /* ----- Project styles ----- */
 .project {
-
+  margin:0 0 15px;
 }
 
 .project-description {
