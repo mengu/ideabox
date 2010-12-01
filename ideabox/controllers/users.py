@@ -37,6 +37,8 @@ class UsersController(BaseController):
         new_user = User(**user_dict)
         Session.add(new_user)
         Session.commit()
+        session['user'] = {'id': new_user.id, 'name': '%s %s' % (new_user.firstname, new_user.lastname)}
+        session.save()
         return redirect('/projects')
 
     def edit(self, id):
