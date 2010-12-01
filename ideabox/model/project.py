@@ -37,22 +37,6 @@ class Project(Base):
             self.author_id = kwargs["author_id"]
             self.dateline = datetime.now()
 
-
-class TaskList(Base):
-    __tablename__ = "tasklist"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(Unicode(100), nullable=False)
-    project_id = Column(Integer, ForeignKey("project.id"), nullable=False)
-
-    tasks = relation("Task", backref="tasklist", primaryjoin="TaskList.id == Task.tasklist_id", 
-        cascade="all", order_by=["task.completed", "task.task"])
-
-    def __init__(self, name, project_id):
-        self.name = name
-        self.project_id = project_id
-
-
 class Task(Base):
     __tablename__ = "task"
 
@@ -91,6 +75,19 @@ class Task(Base):
             self.completed = False
             self.deadline = kwargs["deadline"]
 
+class TaskList(Base):
+    __tablename__ = "tasklist"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(Unicode(100), nullable=False)
+    project_id = Column(Integer, ForeignKey("project.id"), nullable=False)
+
+    tasks = relation("Task", backref="tasklist", primaryjoin="TaskList.id == Task.tasklist_id", 
+        cascade="all", order_by=[Task.completed, Task.task])
+
+    def __init__(self, name, project_id):
+        self.name = name
+        self.project_id = project_id
 
 class Note(Base):
     __tablename__ = "note"
