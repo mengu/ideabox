@@ -2,7 +2,7 @@
 import logging
 import hashlib
 import json
-from formalchemy import FieldSet
+from formalchemy import FieldSet, Field
 
 from pylons import request, response, session, tmpl_context as c, url
 from pylons.controllers.util import abort, redirect
@@ -13,33 +13,42 @@ log = logging.getLogger(__name__)
 
 user_form = FieldSet(User)
 user_form.configure(
-    include= [
+    include = [
+        user_form.username.required(),
         user_form.firstname,
         user_form.lastname,
-        user_form.username,
-        user_form.email
+        user_form.email.required()
     ]
 )
 
 class UsersController(BaseController):
 
     def new(self):
-        return render('users/new.html')
+        return render('users/new.html', {'user_form': user_form.render()})
 
     def create(self):
-        for param in request.params:
-            if param == '' or param is None:
-                return render('users/register.html')
-        user_dict = {}
-        for param in request.params:
-            user_dict[param] = request.params[param]
-        user_dict['password'] = hashlib.md5(request.params['password']).hexdigest()
-        new_user = User(**user_dict)
-        Session.add(new_user)
-        Session.commit()
-        session['user'] = {'id': new_user.id, 'name': '%s %s' % (new_user.firstname, new_user.lastname)}
-        session.save()
-        return redirect('/projects')
+        password = request.POST.pop('password')
+        password_conf = request.POST.pop('password2')
+        create_form = user_form.bind(User, data=request.POST)
+        if request.POST and create_form.validate():
+            user_dict = {
+                'firstname': create_form.firstname.value,
+                'lastname': create_form.lastname.value,
+                'username': create_form.username.value.strip(),
+                'email': create_form.email.value.strip(),
+            }
+            if password == password_conf:
+                user_dict['password'] = hashlib.md5(password).hexdigest()
+                user = User(**user_dict)
+                Session.add(user)
+                Session.commit()
+                session['user'] = {'id': user.id, 'name': '%s %s' % (user.firstname, user.lastname)}
+                session.save()
+                return redirect('/projects')
+            else:
+                session['flash'] = 'Passwords did not match'
+                session.save()
+        return render('users/new.html', {'user_form': create_form.render()})
 
     def edit(self, id):
         if id is not None:
@@ -55,17 +64,13 @@ class UsersController(BaseController):
                     Session.add(user)
                 Session.commit()
                 #redirect("/projects/show/%s" % id)
-                return 'user created...'
-            context = {
-                "user": user,
-                "user_form": edit_form.render(),
-            }
-            return render('/users/edit.html', context)
+                session['flash'] = 'User updated'
+            return render('users/edit.html', {
+                'user': user,
+                'user_form': edit_form.render()
+            })
         else:
             return redirect('/users/new')
-
-    def update(self, id):
-        pass
 
     def login(self):
         return render('users/login.html')

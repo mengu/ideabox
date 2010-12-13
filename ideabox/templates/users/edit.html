@@ -1,4 +1,10 @@
-<form action="/users/edit/${user.id}" method="post">
-  ${edit_form | n}
-  <input type="submit" value="Save" />
+<%inherit file="/common/base.html" />
+
+<%def name="title()">Edit User</%def>
+
+<form action="/users/edit/${user.id}" method="post" class="edit-form user">
+  ${user_form | n}
+  <div class="control-buttons">
+    <input type="submit" value="Save" />
+  </div>
 </form>
