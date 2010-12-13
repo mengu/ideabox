@@ -52,6 +52,13 @@
   </div>
 </%def>
 
-<%def name="flash()"></%def>
-
+<%def name="flash()">
+  % if session.has_key('flash'):
+  <div id="flash"><p>${session.get('flash')}</p></div>
+  <%
+    del session['flash']
+    session.save()
+  %>
+  % endif
+</%def>
 <%def name="footer()"></%def>

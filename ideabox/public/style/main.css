@@ -178,6 +178,10 @@ a.edit {
   margin: 0 0 0 155px;
 }
 .edit-form input.widthAuto { width: auto; }
+
+.edit-form.user input[type=text],
+.edit-form.user input[type=password],
+.edit-form.user textarea { width: 350px; }
 /* ----- Project styles ----- */
 .project {
   margin:0 0 15px;
