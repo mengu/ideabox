@@ -114,8 +114,10 @@ class TasksController(BaseController):
 
     def delete(self, id):
         try:
-            task = Session.query(Task).filter_by(id=id).delete()
+            task = Session.query(Task).filter_by(id=id)
+            proj_id = task.one().project.id
+            task.delete()
         except:
             abort(404)
-        return redirect("/projects/index")
+        return redirect("/projects/show/%s" % proj_id)
 

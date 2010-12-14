@@ -55,16 +55,6 @@ class Task(Base):
     #user = relation(User, backref="tasks", primaryjoin="Task.user_id == User.id")
     assigned_user = relation(User, backref="tasks_assigned", primaryjoin="Task.assigned_to == User.id")
 
-    #def __init__(self, task, tasklist_id, project_id, user_id, assigned_to, deadline):
-    #    self.task = task
-    #    self.tasklist_id = tasklist_id
-    #    self.project_id = project_id
-    #    self.user_id = user_id
-    #    self.assigned_to = assigned_to
-    #    self.completed = False
-    #    self.deadline = deadline
-    #    self.dateline = datetime.now()
-
     def __init__(self, *args, **kwargs):
         if len(kwargs) > 0:
             self.task = kwargs["task"]
