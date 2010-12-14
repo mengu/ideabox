@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import logging
-import hashlib
 import json
 from formalchemy import FieldSet, Field
 
@@ -38,7 +37,7 @@ class UsersController(BaseController):
                 'email': create_form.email.value.strip(),
             }
             if password == password_conf:
-                user_dict['password'] = hashlib.md5(password).hexdigest()
+                user_dict['password'] = password
                 user = User(**user_dict)
                 Session.add(user)
                 Session.commit()

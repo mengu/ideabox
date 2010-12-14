@@ -4,6 +4,8 @@
 __author__="mengu"
 __date__ ="$Jun 27, 2010 5:16:19 PM$"
 
+import hashlib
+
 from sqlalchemy import Column
 from sqlalchemy.types import Integer, Unicode, DateTime
 from ideabox.model.meta import Base
@@ -26,4 +28,8 @@ class User(Base):
             self.lastname = kwargs['lastname']
             self.username = kwargs['username']
             self.email = kwargs['email']
-            self.password = kwargs['password']
+            self.password = self.hash(kwargs['password'])
+
+    def hash(self, password):
+        return hashlib.md5(password).hexdigest()
+
