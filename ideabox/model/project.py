@@ -2,12 +2,13 @@ __author__="mengu"
 __date__ ="$Jun 27, 2010 5:16:14 PM$"
 
 from sqlalchemy import Table, Column, ForeignKey
-from sqlalchemy.types import Integer, Unicode, UnicodeText, DateTime, Boolean
+from sqlalchemy.types import Integer, Unicode, UnicodeText, Date, DateTime, Boolean
 from sqlalchemy.orm import relation
 from ideabox.model.meta import Base
 from ideabox.model.user import User
 from ideabox.lib.helpers import slugify
 from datetime import datetime
+from datetime import date
 
 project_member_table = Table('project_member', Base.metadata,
     Column('project_id', Integer, ForeignKey('project.id'), primary_key=True),
@@ -35,7 +36,7 @@ class Project(Base):
             self.slug = slugify(self.name)
             self.description = kwargs["description"]
             self.author_id = kwargs["author_id"]
-            self.dateline = datetime.now()
+            self.dateline = datetime.utcnow()
 
 class Task(Base):
     __tablename__ = "task"
@@ -48,7 +49,7 @@ class Task(Base):
     assigned_to = Column(Integer, ForeignKey("user.id"), nullable=False)
     completed = Column(Boolean, nullable=False)
     completed_at = Column(DateTime, nullable=True)
-    deadline = Column(DateTime, nullable=True)
+    deadline = Column(Date, nullable=True)
     dateline = Column(DateTime, nullable=False, default=datetime.now())
 
     project = relation(Project, backref="tasks", primaryjoin="Task.project_id == Project.id")
@@ -96,7 +97,7 @@ class Note(Base):
         self.task = task
         self.author = author
         self.note = note
-        self.dateline = datetime.now()
+        self.dateline = datetime.utcnow()
 
 class Ticket(Base):
     __tablename__ = "ticket"
