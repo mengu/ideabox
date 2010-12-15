@@ -5,5 +5,8 @@
 
 <form method="post" action="/tasks/edit/${task.id}" class="edit-form">
   ${task_form | n}
-  <input type="submit" value="Create Task" />
+
+  <div class="control-buttons">
+    <input type="submit" value="Create Task" />
+  </div>
 </form>
