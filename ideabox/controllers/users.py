@@ -76,7 +76,7 @@ class UsersController(BaseController):
 
     def dologin(self):
         if request.params['email'] and request.params['password']:
-            password = hashlib.md5(request.params['password']).hexdigest()
+            password = User.hash(request.params['password'])
             try:
                 user = Session.query(User).filter(User.email==request.params['email']).\
                     filter(User.password==password).one()

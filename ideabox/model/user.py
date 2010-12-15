@@ -30,6 +30,7 @@ class User(Base):
             self.email = kwargs['email']
             self.password = self.hash(kwargs['password'])
 
-    def hash(self, password):
+    @staticmethod
+    def hash(password):
         return hashlib.md5(password).hexdigest()
 
