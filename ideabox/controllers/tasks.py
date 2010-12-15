@@ -7,9 +7,17 @@ from ideabox.lib.base import BaseController, Session, render
 from ideabox.model.project import Task, TaskList, Note
 from ideabox.model.user import User
 from datetime import datetime
-from formalchemy import FieldSet, Grid, Field
+from formalchemy import FieldSet, Grid, Field, FieldRenderer
 
 log = logging.getLogger(__name__)
+
+class DatePickerFieldRenderer(FieldRenderer):
+    def render(self):
+        value = self.value and self.value or ''
+        vars = dict(name=self.name, value=value)
+        return """
+            <input id="%(name)s" class="widthAuto" name="%(name)s" type="text" value="%(value)s" />
+        """ % vars
 
 task_form = FieldSet(Task)
 task_form.configure(include=[
@@ -17,7 +25,7 @@ task_form.configure(include=[
     task_form.assigned_to.dropdown(
         options=[(user.username, user.id) for user in Session.query(User).all()]
     ).required(),
-    task_form.deadline.with_html(class_='widthAuto'),
+    task_form.deadline.with_renderer(DatePickerFieldRenderer),
     #task_form.tasklist_id,
     #task_form.project_id.hidden(),
 ])
@@ -37,12 +45,11 @@ class TasksController(BaseController):
                 return redirect("/projects")
         #task_form.append(Field(name="tasklist_id", value=request.params["tasklist"]))
         #task_form.append(Field(name="project_id", value=request.params["project"]))
-        context = {
+        return render("tasks/new.html", {
             "task_form": task_form.render(),
             "tasklist_id": request.params["tasklist"],
             "project_id": request.params["project"]
-        }
-        return render("tasks/new.html", context)
+        })
 
     def create(self):
         create_form = task_form.bind(Task, data=request.params)
@@ -62,11 +69,12 @@ class TasksController(BaseController):
             return redirect("/projects/show/%s" % task_args["project_id"])
 
         context = {
+        }
+        return render("tasks/new.html", {
             "task_form": create_form.render(),
             "tasklist_id": request.params["tasklist"],
             "project_id": request.params["project"],
-        }
-        return render("tasks/new.html", context)
+        })
 
     def show(self, id):
         try:
@@ -77,27 +85,28 @@ class TasksController(BaseController):
         return render("tasks/show.html", {"task": task, "notes": notes})
 
     def edit(self, id=None):
-        if id is None:
+        try:
+            task = Session.query(Task).filter_by(id=id).one()
+        except:
             abort(404)
-        task = Session.query(Task).filter_by(id=id).first()
-        if task is None:
-            abort(404)
+
         edit_form = task_form.bind(task, data=request.POST or None)
         tasklist = Field('tasklist_id').dropdown(
             options=[(tasklist.name, tasklist.id) for tasklist in Session.query(TaskList).\
                         filter_by(project_id=task.project_id).all()]).\
             required().label('Task List')
         edit_form.append(tasklist)
+
         if request.POST and edit_form.validate():
             task.tasklist = Session.query(TaskList).filter_by(id=request.POST.values()[-1]).one()
             edit_form.sync()
             Session.commit()
             return redirect("/projects/show/%s" % task.project_id)
-        context = {
+
+        return render("tasks/edit.html", {
             "task": task,
             "task_form": edit_form.render()
-        }
-        return render("tasks/edit.html", context)
+        })
 
     def complete(self, id):
         try:
