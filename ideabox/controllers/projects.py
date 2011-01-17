@@ -24,11 +24,7 @@ project_form.configure(
 
 class ProjectsController(BaseController):
 
-    def __before__(self, action, **params):
-        filter_actions = ["new", "edit", "create", "update", "delete", 'index']
-        if "user" not in session and action in filter_actions:
-            redirect("/users/login")
-
+    filter_actions = ["new", "edit", "create", "update", "delete", 'index']
 
     def new(self):
         context = {
