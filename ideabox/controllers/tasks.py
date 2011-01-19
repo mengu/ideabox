@@ -37,6 +37,7 @@ class TasksController(BaseController):
         if "user" not in session and action in filter_actions:
             redirect("/users/login")
 
+
     def new(self):
         # TODO this doesn't work
         if not request.params["tasklist"] or \
@@ -50,6 +51,7 @@ class TasksController(BaseController):
             "tasklist_id": request.params["tasklist"],
             "project_id": request.params["project"]
         })
+
 
     def create(self):
         create_form = task_form.bind(Task, data=request.params)
@@ -76,6 +78,7 @@ class TasksController(BaseController):
             "project_id": request.params["project"],
         })
 
+
     def show(self, id):
         try:
             task = Session.query(Task).filter_by(id=id).one()
@@ -83,6 +86,7 @@ class TasksController(BaseController):
             abort(404)
         notes = Session.query(Note).filter_by(task=id).all()
         return render("tasks/show.html", {"task": task, "notes": notes})
+
 
     def edit(self, id=None):
         try:
@@ -108,6 +112,7 @@ class TasksController(BaseController):
             "task_form": edit_form.render()
         })
 
+
     def complete(self, id):
         try:
             task = Session.query(Task).filter_by(id=id).one()
@@ -121,12 +126,18 @@ class TasksController(BaseController):
         })
         Session.commit()
 
+
     def delete(self, id):
         try:
-            task = Session.query(Task).filter_by(id=id)
-            proj_id = task.one().project.id
-            task.delete()
+            task = Session.query(Task).filter_by(id=id).one()
+            proj_id = task.project.id
         except:
             abort(404)
-        return redirect("/projects/show/%s" % proj_id)
+
+        if "_method" in request.params and request.params["_method"] == "DELETE":
+            Session.delete(task)
+            Session.commit()
+            # TODO flash a message
+            return redirect("/projects/show/%s" % proj_id)
+        return render("/tasks/delete.html", {"task": task})
 
