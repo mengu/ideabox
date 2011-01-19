@@ -76,9 +76,10 @@ class TaskList(Base):
     tasks = relation("Task", backref="tasklist", primaryjoin="TaskList.id == Task.tasklist_id", 
         cascade="all", order_by=[Task.completed, Task.task])
 
-    def __init__(self, name, project_id):
-        self.name = name
-        self.project_id = project_id
+    def __init__(self, *args, **kwargs):
+        if len(kwargs) > 0:
+            self.name = kwargs['name']
+            self.project_id = kwargs['project_id']
 
 class Note(Base):
     __tablename__ = "note"
