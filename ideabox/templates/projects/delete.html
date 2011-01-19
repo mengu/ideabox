@@ -1,0 +1,13 @@
+<%inherit file="/common/base.html" />
+
+<%def name="title()">Delete ${project.name}?</%def>
+
+
+<h1>Delete ${project.name}</h1>
+
+<form action="/projects/delete/${project.id}" method="post">
+  <input type="hidden" name="_method" value="DELETE" />
+  <p>Are you sure you want to delete this project?</p>
+  <input type="submit" value="Confirm" />
+  <a href="/projects/show/${project.id}">Cancel</a>
+</form>

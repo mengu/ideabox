@@ -24,7 +24,7 @@ project_form.configure(
 
 class ProjectsController(BaseController):
 
-    filter_actions = ["new", "edit", "create", "update", "delete", 'index']
+    filter_actions = ["new", "edit", "create", "update", "delete", "index"]
 
     def new(self):
         context = {
@@ -37,14 +37,18 @@ class ProjectsController(BaseController):
         create_form = project_form.bind(Project, data=request.params)
         if request.POST and create_form.validate():
             project_args = {
-                #"name": request.params["Project--name"],
                 "name": create_form.name.value,
-                #"description": request.params["Project--description"],
                 "description": create_form.description.value,
                 "author_id": 1, # TODO set this based on logged-in user
             }
             project = Project(**project_args)
-            project.tasklists = [TaskList("Tasks", project.id)]
+
+            tasklist_args = {
+                "name": "Tasks",
+                "project_id": project.id
+            }
+            project.tasklists = [TaskList(**tasklist_args)]
+
             Session.add(project)
             Session.commit()
             return redirect("/projects/show/%s" % project.id)
@@ -98,6 +102,19 @@ class ProjectsController(BaseController):
             "project_form": edit_form.render(),
         }
         return render("projects/edit.html", context)
+
+
+    def delete(self, id):
+        try:
+            project = Session.query(Project).filter_by(id=id).one()
+        except:
+            abort(404)
+        if "_method" in request.params and request.params["_method"] == "DELETE":
+            Session.delete(project)
+            Session.commit()
+            # TODO flash a message saying the project was deleted
+            return redirect("/projects")
+        return render("projects/delete.html", {"project": project})
 
 
     def users(self, id):
